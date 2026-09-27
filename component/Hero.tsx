@@ -287,7 +287,7 @@ function ProductCard({
           </p>
 
           <div className="mt-0.5 flex items-center gap-1 sm:mt-1 sm:gap-2">
-            <span className="text-[10px] font-black text-green-600 sm:text-xs md:text-sm">
+            <span className="text-[10px] font-black text-[#fd5700] sm:text-xs md:text-sm">
               {product.price}
             </span>
 
