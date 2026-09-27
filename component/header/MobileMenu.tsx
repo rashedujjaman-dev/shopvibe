@@ -1,4 +1,4 @@
-
+"use client"
 
 // component/header/MobileMenu
 

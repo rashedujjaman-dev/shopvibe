@@ -15,6 +15,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { RiShoppingBasket2Fill } from "react-icons/ri";
 import { MobileMenu } from "./MobileMenu";
+import { SearchBar } from "../SearchBar";
 
 export const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] =useState(false);
@@ -43,6 +44,8 @@ export const Header = () => {
               />
             </Link>
           </div>
+
+          <SearchBar />
           {/*  links  */}
           <nav className=" hidden md:flex items-center justify-center space-x-8 text-base font-medium text-gray-700">
             {NAV_ITEMS.map((item) => (
