@@ -1,16 +1,32 @@
+"use client";
+
 import { NAV_ITEMS } from "@/constants/navigation";
 import {
+  Menu,
   ShoppingBag,
   ShoppingBagIcon,
   ShoppingBasket,
   ShoppingCart,
   User,
+  X,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 import { RiShoppingBasket2Fill } from "react-icons/ri";
+import { MobileMenu } from "./MobileMenu";
 
 export const Header = () => {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] =useState(false);
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen((prev) => !prev);
+  }
+
+  const closeMobileMenu = () => {
+    setIsMobileMenuOpen(false);
+  };
+
   return (
     <header className=" sticky top-0 w-full z-50 bg-white/90 shadow-sm ">
       <div className=" max-w-7xl mx-auto px-4 sm:px-6  md:px-8">
@@ -58,13 +74,33 @@ export const Header = () => {
             >
               <ShoppingCart className="w-6 h-6" />
               {/* Cart Count Badge */}
-              <span className="absolute top-0 right-0 inline-flex items-center justify-center px-1.5 py-0.5 text-xs font-bold leading-none text-white bg-[#fd5700] rounded-full">
+              <span className="absolute -top-1 right-0 inline-flex items-center justify-center px-1.5 py-1 text-xs font-bold leading-none text-white bg-[#fd5700] rounded-full">
                 0
               </span>
             </Link>
           </div>
+
+          {/* Mobile button */}
+          <div className="flex md:hidden items-center space-x-3">
+            <Link href="/cart" className=" relative p-1.5 text-gray-700" aria-label="Shopping Cart">
+              <ShoppingCart className="w-6 h-6" />
+              <span className="absolute -top-1 -right-1 inline-flex items-center justify-center px-1.5 py-0.5 text-xs font-bold leading-none text-white bg-[#fd5700] rounded-full">
+                0
+              </span>
+            </Link>
+
+            <button
+              onClick={toggleMobileMenu}
+              className="p-2 text-gray-700 rounded-md hover:bg-gray-100 focus:outline-none"
+              aria-label="Toggle Menu"
+            >
+              {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
+          </div>
         </div>
       </div>
+      {/* Mobile Menu Dropdown */}
+      <MobileMenu isOpen={isMobileMenuOpen} onClose={closeMobileMenu}/>
     </header>
   );
 };
