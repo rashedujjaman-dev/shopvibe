@@ -5,6 +5,13 @@ import Link from "next/link";
 
 const products = [
   {
+    name: "Power Bank",
+    price: "$ 320",
+    oldPrice: "$ 390",
+    discount: "35%",
+    image: "/products/powerbank (3).png",
+  },
+  {
     name: "Wireless Earbuds",
     price: "$ 175",
     oldPrice: "$ 180",
@@ -16,22 +23,16 @@ const products = [
     price: "$ 299",
     oldPrice: "$ 270",
     discount: "34%",
-    image: "/products/wwwcccc.png",
+    image: "/products/smartwatch (5).png",
   },
   {
     name: "JBL Headphones",
     price: "$ 180",
     oldPrice: "$ 190",
     discount: "38%",
-    image: "/products/hhhhhppp.png",
+    image: "/products/headphones (2).png",
   },
-  {
-    name: "Power Bank",
-    price: "$ 320",
-    oldPrice: "$ 390",
-    discount: "35%",
-    image: "/products/pppewbbb.jpg",
-  },
+  
 ];
 
 export default function Hero() {

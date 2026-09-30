@@ -1,4 +1,6 @@
 import Hero from '@/component/Hero'
+import { ProductSection } from '@/component/ProductSection'
+
 import React from 'react'
 
 const Home
@@ -6,6 +8,7 @@ const Home
   return (
     <div>
       <Hero />
+      <ProductSection />
     </div>
   )
 }
