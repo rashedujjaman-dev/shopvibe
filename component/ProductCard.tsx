@@ -24,15 +24,15 @@ export default function ProductCard({ product }: ProductCardProps) {
   };
 
   return (
-    <div className="group relative flex flex-col overflow-hidden rounded-xl border border-gray-100 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md">
+    <div className="group relative flex flex-col overflow-hidden rounded-xl border border-gray-100 bg-gray-50 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md">
      {/* Product Image */}
-      <Link href={`/product/${id}`} className="relative aspect-square w-full overflow-hidden bg-gray-50">
+      <Link href={`/product/${id}`} className="relative aspect-square w-full bg-gray-50 overflow-hidden">
         <Image
           src={image}
           alt={name}
           fill
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-          className="object-cover object-center transition-transform duration-500 group-hover:scale-105"
+          className="object-cover bg-gray-50 object-center transition-transform duration-500 group-hover:scale-105"
         />
 
         {/* Discounts and Badges */}
@@ -70,15 +70,15 @@ export default function ProductCard({ product }: ProductCardProps) {
             {discountPrice ? (
               <div className="flex items-baseline space-x-1.5">
                 <span className="text-lg font-bold text-gray-900">
-                  ৳{discountPrice.toLocaleString()}
+                  $ {discountPrice.toLocaleString()}
                 </span>
                 <span className="text-xs font-medium text-gray-400 line-through">
-                  ৳{price.toLocaleString()}
+                  $ {price.toLocaleString()}
                 </span>
               </div>
             ) : (
               <span className="text-lg font-bold text-gray-900">
-                ৳{price.toLocaleString()}
+                $ {price.toLocaleString()}
               </span>
             )}
           </div>
