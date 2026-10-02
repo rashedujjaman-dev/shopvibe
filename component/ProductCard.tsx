@@ -59,7 +59,7 @@ export default function ProductCard({ product }: ProductCardProps) {
 
         {/* name */}
         <Link href={`/product/${id}`} className="group-hover:text-[#fd5700] transition-colors">
-          <h3 className="line-clamp-2 text-sm font-semibold text-gray-800 leading-snug min-h-[2.5rem]">
+          <h3 className="line-clamp-2 text-sm font-semibold text-gray-800 leading-snug min-h-10">
             {name}
           </h3>
         </Link>

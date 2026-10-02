@@ -2,57 +2,58 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { HiArrowDown } from "react-icons/hi";
+import { TbShoppingBagPlus } from "react-icons/tb";
+
 
 const products = [
   {
+    id: "1",
     name: "Power Bank",
-    price: "$ 320",
-    oldPrice: "$ 390",
-    discount: "35%",
+    category: "power-bank", 
+    originalPrice: 390,
+    discountPercent: 15,
     image: "/products/powerbank (3).png",
   },
   {
+    id: "2",
     name: "Wireless Earbuds",
-    price: "$ 175",
-    oldPrice: "$ 180",
-    discount: "25%",
+    category: "earbuds", // 
+    originalPrice: 180,
+    discountPercent: 20,
     image: "/products/earbuds.png",
   },
   {
+    id: "3",
     name: "Smart Watch",
-    price: "$ 299",
-    oldPrice: "$ 270",
-    discount: "34%",
+    category: "smart-watch",
+    originalPrice: 270,
+    discountPercent: 30,
     image: "/products/smartwatch (5).png",
   },
   {
-    name: "JBL Headphones",
-    price: "$ 180",
-    oldPrice: "$ 190",
-    discount: "38%",
+    id: "4",
+    name: "Headphones",
+    category: "headphones",
+    originalPrice: 190,
+    discountPercent: 25,
     image: "/products/headphones (2).png",
   },
-  
 ];
 
 export default function Hero() {
   return (
     <section className="w-full overflow-hidden bg-white">
-
       {/* ================= HERO ================= */}
       <div className="relative w-full bg-gradient-to-r from-[#fffef5] via-[#f4fbf8] to-[#e8f7f5]">
-
         {/* Background decoration */}
         <div className="pointer-events-none absolute -left-20 top-0 h-64 w-64 rounded-full bg-green-100/50 blur-3xl" />
         <div className="pointer-events-none absolute right-0 top-0 h-72 w-72 rounded-full bg-cyan-100/50 blur-3xl" />
 
         <div className="relative mx-auto max-w-[1400px] px-4 py-6 sm:px-6 sm:py-8 lg:px-10 lg:py-10">
-
           <div className="grid items-center gap-6 lg:grid-cols-[38%_62%] xl:grid-cols-[36%_64%]">
-
             {/* ================= LEFT CONTENT ================= */}
             <div className="relative z-20">
-
               {/* Offer */}
               <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-[#fd5700] px-3 py-1.5 text-[11px] font-bold text-white shadow-md sm:px-4 sm:py-2 sm:text-sm">
                 <span className="text-sm sm:text-base">🔥</span>
@@ -74,13 +75,12 @@ export default function Hero() {
 
               {/* Description */}
               <p className="mt-3 max-w-[390px] text-[11px] font-medium leading-5 text-slate-700 sm:mt-4 sm:text-sm sm:leading-6">
-                Make your daily life easier, smarter, and more stylish
-with some of our best products!
+                Make your daily life easier, smarter, and more stylish with some
+                of our best products!
               </p>
 
               {/* Benefits */}
               <div className="mt-4 grid max-w-[430px] grid-cols-3 gap-2 sm:mt-5 sm:gap-3">
-
                 {/* Free Delivery */}
                 <div className="flex items-center gap-1.5 sm:gap-2">
                   <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#f8d6c6] sm:h-9 sm:w-9">
@@ -150,53 +150,49 @@ with some of our best products!
                     </p>
                   </div>
                 </div>
-
               </div>
 
-              {/* CTA */}
-              <Link
-                href="/products"
+              
+              <div
+                
                 className="mt-5 inline-flex items-center gap-2 rounded-full bg-[#fd5700] px-5 py-2.5 text-xs font-bold text-white shadow-lg transition hover:bg-[#fd5500] sm:mt-6 sm:px-7 sm:py-3 sm:text-sm"
               >
-                <span>🛒</span>
+                <span><TbShoppingBagPlus className=" h-5 w-5"/></span>
                 <span>Buy now</span>
-                <span>→</span>
-              </Link>
+                <HiArrowDown className="h-7 w-7 stroke-[3]" />
+              </div>
             </div>
 
             {/* ================= PRODUCTS ================= */}
             <div className="relative min-h-[280px] sm:min-h-[390px] md:min-h-[430px] lg:min-h-[440px]">
-
-              {/* Product 1 - Earbuds */}
+              {/* Product 1 - Power Bank */}
               <ProductCard
                 product={products[0]}
                 className="left-0 top-[12%] w-[43%] sm:left-[2%] sm:w-[42%] lg:left-0 lg:w-[40%]"
                 imageClass="h-[145px] sm:h-[200px] md:h-[220px] lg:h-[235px]"
               />
 
-              {/* Product 2 - Watch */}
+              {/* Product 2 - Earbuds */}
               <ProductCard
                 product={products[1]}
                 className="right-[3%] top-0 w-[39%] sm:right-[4%] sm:w-[37%] lg:right-[5%] lg:w-[36%]"
                 imageClass="h-[155px] sm:h-[215px] md:h-[235px] lg:h-[250px]"
               />
 
-              {/* Product 3 - Headphones */}
+              {/* Product 3 - Smart Watch */}
               <ProductCard
                 product={products[2]}
                 className="bottom-0 left-[8%] w-[43%] sm:left-[10%] sm:w-[41%] lg:left-[9%] lg:w-[40%]"
                 imageClass="h-[140px] sm:h-[195px] md:h-[215px] lg:h-[230px]"
               />
 
-              {/* Product 4 - Power Bank */}
+              {/* Product 4 - Headphones */}
               <ProductCard
                 product={products[3]}
                 className="bottom-[3%] right-0 w-[37%] sm:right-[1%] sm:w-[35%] lg:right-[2%] lg:w-[34%]"
                 imageClass="h-[125px] sm:h-[175px] md:h-[195px] lg:h-[210px]"
               />
-
             </div>
-
           </div>
         </div>
       </div>
@@ -204,7 +200,6 @@ with some of our best products!
       {/* ================= TRUST BAR ================= */}
       <div className="w-full bg-[#062b3a] text-white">
         <div className="mx-auto grid max-w-[1400px] grid-cols-3">
-
           {/* Genuine */}
           <TrustItem
             type="shield"
@@ -225,17 +220,14 @@ with some of our best products!
             title="Shop with Confidence"
             subtitle="Easy Returns & Refunds"
           />
-
         </div>
       </div>
-
     </section>
   );
 }
 
-
 /* =====================================================
-   PRODUCT CARD
+   PRODUCT CARD COMPONENT
 ===================================================== */
 
 function ProductCard({
@@ -244,29 +236,33 @@ function ProductCard({
   imageClass,
 }: {
   product: {
+    id: string;
     name: string;
-    price: string;
-    oldPrice: string;
-    discount: string;
+    category: string;
+    originalPrice: number;
+    discountPercent?: number;
     image: string;
   };
   className?: string;
   imageClass?: string;
 }) {
+  const calculatedPrice = Math.round(
+    product.originalPrice - (product.originalPrice * product.discountPercent!) / 100
+  );
+
   return (
-    <Link
-      href="/products"
+    /* Dynamic category in the card link */
+    <div
       className={`absolute z-10 overflow-visible ${className}`}
     >
       {/* Discount Circle */}
       <div className="absolute -right-2 top-0 z-30 flex h-10 w-10 items-center justify-center rounded-full bg-[#fd5700] text-center text-[8px] font-black leading-tight text-white shadow-md sm:-right-3 sm:h-12 sm:w-12 sm:text-[9px]">
-        {product.discount}
+        {product.discountPercent}%
         <span className="ml-[1px]">OFF</span>
       </div>
 
       {/* Product Area */}
       <div className="rounded-[18px] bg-white/80 p-1.5 shadow-lg backdrop-blur-sm sm:rounded-[22px] sm:p-2">
-
         {/* Product Image */}
         <div
           className={`relative flex items-center justify-center overflow-hidden rounded-[14px] bg-gradient-to-br from-white to-slate-100 ${imageClass}`}
@@ -282,31 +278,26 @@ function ProductCard({
 
         {/* Product Details */}
         <div className="px-1 pb-1 pt-1.5 sm:px-2 sm:pb-2 sm:pt-2">
-
           <p className="truncate text-[8px] font-bold text-slate-800 sm:text-[10px] md:text-xs">
             {product.name}
           </p>
 
           <div className="mt-0.5 flex items-center gap-1 sm:mt-1 sm:gap-2">
             <span className="text-[10px] font-black text-[#fd5700] sm:text-xs md:text-sm">
-              {product.price}
+              ${calculatedPrice}
             </span>
 
             <span className="text-[7px] text-slate-400 line-through sm:text-[9px]">
-              {product.oldPrice}
+              ${product.originalPrice}
             </span>
           </div>
-
         </div>
       </div>
-    </Link>
+    </div>
   );
 }
 
-
-
-  //  TRUST ITEM
-
+// TRUST ITEM
 
 function TrustItem({
   type,
@@ -319,10 +310,8 @@ function TrustItem({
 }) {
   return (
     <div className="flex min-w-0 items-center justify-center gap-1.5 border-r border-white/10 px-1.5 py-3 last:border-r-0 sm:gap-3 sm:px-4 sm:py-4">
-
       {/* Icon */}
       <div className="flex h-7 w-7 shrink-0 items-center justify-center sm:h-9 sm:w-9">
-
         {type === "shield" && (
           <svg
             viewBox="0 0 24 24"
@@ -362,7 +351,6 @@ function TrustItem({
             <path d="M20.8 8.7c0 5-8.8 10.3-8.8 10.3S3.2 13.7 3.2 8.7A4.7 4.7 0 0 1 12 6.4a4.7 4.7 0 0 1 8.8 2.3z" />
           </svg>
         )}
-
       </div>
 
       {/* Text */}
@@ -375,7 +363,6 @@ function TrustItem({
           {subtitle}
         </p>
       </div>
-
     </div>
   );
 }
