@@ -2,15 +2,14 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { HiArrowDown } from "react-icons/hi";
+import { HiArrowDown, HiArrowRight } from "react-icons/hi";
 import { TbShoppingBagPlus } from "react-icons/tb";
-
 
 const products = [
   {
     id: "1",
     name: "Power Bank",
-    category: "power-bank", 
+    category: "power-bank",
     originalPrice: 390,
     discountPercent: 15,
     image: "/products/powerbank (3).png",
@@ -18,7 +17,7 @@ const products = [
   {
     id: "2",
     name: "Wireless Earbuds",
-    category: "earbuds", // 
+    category: "earbuds", //
     originalPrice: 180,
     discountPercent: 20,
     image: "/products/earbuds.png",
@@ -50,7 +49,7 @@ export default function Hero() {
         <div className="pointer-events-none absolute -left-20 top-0 h-64 w-64 rounded-full bg-green-100/50 blur-3xl" />
         <div className="pointer-events-none absolute right-0 top-0 h-72 w-72 rounded-full bg-cyan-100/50 blur-3xl" />
 
-        <div className="relative mx-auto max-w-[1400px] px-4 py-6 sm:px-6 sm:py-8 lg:px-10 lg:py-10">
+        <div className="relative mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8 lg:px-10 lg:py-10">
           <div className="grid items-center gap-6 lg:grid-cols-[38%_62%] xl:grid-cols-[36%_64%]">
             {/* ================= LEFT CONTENT ================= */}
             <div className="relative z-20">
@@ -152,15 +151,16 @@ export default function Hero() {
                 </div>
               </div>
 
-              
-              <div
-                
-                className="mt-5 inline-flex items-center gap-2 rounded-full bg-[#fd5700] px-5 py-2.5 text-xs font-bold text-white shadow-lg transition hover:bg-[#fd5500] sm:mt-6 sm:px-7 sm:py-3 sm:text-sm"
+              <Link
+                href="/shop"
+                className="mt-5 inline-flex items-center gap-2 rounded-full bg-[#fd5700] px-5 py-2.5 text-xs font-bold text-white shadow-lg transition hover:bg-[#d84e04] sm:mt-6 sm:px-7 sm:py-3 sm:text-sm cursor-pointer"
               >
-                <span><TbShoppingBagPlus className=" h-5 w-5"/></span>
+                <span>
+                  <TbShoppingBagPlus className=" h-5 w-5" />
+                </span>
                 <span>Buy now</span>
-                <HiArrowDown className="h-7 w-7 stroke-[3]" />
-              </div>
+                <HiArrowRight className="h-5 w-5 stroke-2 " />
+              </Link>
             </div>
 
             {/* ================= PRODUCTS ================= */}
@@ -247,18 +247,16 @@ function ProductCard({
   imageClass?: string;
 }) {
   const calculatedPrice = Math.round(
-    product.originalPrice - (product.originalPrice * product.discountPercent!) / 100
+    product.originalPrice -
+      (product.originalPrice * product.discountPercent!) / 100,
   );
 
   return (
     /* Dynamic category in the card link */
-    <div
-      className={`absolute z-10 overflow-visible ${className}`}
-    >
+    <div className={`absolute z-10 overflow-visible ${className}`}>
       {/* Discount Circle */}
       <div className="absolute -right-2 top-0 z-30 flex h-10 w-10 items-center justify-center rounded-full bg-[#fd5700] text-center text-[8px] font-black leading-tight text-white shadow-md sm:-right-3 sm:h-12 sm:w-12 sm:text-[9px]">
-        {product.discountPercent}%
-        <span className="ml-[1px]">OFF</span>
+        {product.discountPercent}%<span className="ml-[1px]">OFF</span>
       </div>
 
       {/* Product Area */}
