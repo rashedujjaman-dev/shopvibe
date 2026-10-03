@@ -6,4 +6,6 @@ export interface Product {
   price: number;
   discountPrice?: number;
   badge?: string;
+  description?: string;
+  rating?: number;
 }

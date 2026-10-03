@@ -1,6 +1,5 @@
 import { Product } from "@/types/product";
 
-
 export const sampleProducts: Product[] = [
   // --- Smart Watch ---
   {
@@ -11,6 +10,8 @@ export const sampleProducts: Product[] = [
     price: 550,
     discountPrice: 500,
     badge: "Popular",
+    description: "Advanced smartwatch with S9 SIP, Double Tap gesture, brighter display, and comprehensive health & fitness tracking.",
+    rating: 5,
   },
   {
     id: "sw-2",
@@ -19,6 +20,8 @@ export const sampleProducts: Product[] = [
     image: "/products/smartwatch (2).png",
     price: 650,
     discountPrice: 580,
+    description: "Iconic rotating bezel design featuring advanced sleep coaching, ECG monitoring, and personalized HR zones.",
+    rating: 4.8,
   },
   {
     id: "sw-3",
@@ -26,6 +29,8 @@ export const sampleProducts: Product[] = [
     category: "Smart Watch",
     image: "/products/smartwatch (3).png",
     price: 200,
+    description: "Ultra-slim and light design with 1.65\" HD AMOLED display, 120+ sports modes, and up to 15-day battery life.",
+    rating: 4.5,
   },
   {
     id: "sw-4",
@@ -34,6 +39,8 @@ export const sampleProducts: Product[] = [
     image: "/products/smartwatch (4).png",
     price: 390,
     discountPrice: 330,
+    description: "Features a 1.43\" AMOLED display, Bluetooth phone calls, SpO2 testing, and 105 workout modes.",
+    rating: 4.6,
   },
   {
     id: "sw-5",
@@ -42,6 +49,8 @@ export const sampleProducts: Product[] = [
     image: "/products/smartwatch (5).png",
     price: 600,
     discountPrice: 700,
+    description: "Stylish sport watch with dual-band GPS, 117 fitness modes, 5ATM water resistance, and long battery runtime.",
+    rating: 4.4,
   },
 
   // --- Earbuds ---
@@ -53,6 +62,8 @@ export const sampleProducts: Product[] = [
     price: 600,
     discountPrice: 490,
     badge: "Best Seller",
+    description: "Up to 2x more Active Noise Cancellation, Transparency mode, Personalized Spatial Audio, and USB-C charging.",
+    rating: 4.9,
   },
   {
     id: "eb-2",
@@ -60,6 +71,8 @@ export const sampleProducts: Product[] = [
     category: "Earbuds",
     image: "/products/earbuds (2).png",
     price: 450,
+    description: "Industry-leading noise canceling earbuds with high-resolution audio, crystal-clear call quality, and ergonomic fit.",
+    rating: 4.8,
   },
   {
     id: "eb-3",
@@ -68,6 +81,8 @@ export const sampleProducts: Product[] = [
     image: "/products/earbuds (3).png",
     price: 400,
     discountPrice: 350,
+    description: "Reduces noise by up to 98.5% with custom adaptive ANC, Hi-Res wireless audio, and 50-hour total playtime.",
+    rating: 4.7,
   },
   {
     id: "eb-4",
@@ -76,6 +91,8 @@ export const sampleProducts: Product[] = [
     image: "/products/earbuds (4).png",
     price: 380,
     discountPrice: 310,
+    description: "Coaxial dual drivers, 50dB active noise cancellation, 3D spatial sound effect, and LDAC audio codec support.",
+    rating: 4.6,
   },
   {
     id: "eb-5",
@@ -83,6 +100,8 @@ export const sampleProducts: Product[] = [
     category: "Earbuds",
     image: "/products/earbuds (5).png",
     price: 400,
+    description: "Open-ear design with Deep Bass Sound, dust and water-resistant construction, and 32 hours of total battery.",
+    rating: 4.3,
   },
 
   // --- Headphones ---
@@ -94,6 +113,8 @@ export const sampleProducts: Product[] = [
     price: 800,
     discountPrice: 750,
     badge: "Top Rated",
+    description: "Magnificent noise-canceling headphones with two processors, 8 microphones, and ultra-comfortable lightweight design.",
+    rating: 4.9,
   },
   {
     id: "hp-2",
@@ -101,6 +122,8 @@ export const sampleProducts: Product[] = [
     category: "Headphones",
     image: "/products/headphones (2).png",
     price: 620,
+    description: "World-class noise cancelling, Quiet & Aware Modes, high-fidelity audio, and up to 24 hours of listening time.",
+    rating: 4.7,
   },
   {
     id: "hp-3",
@@ -109,6 +132,8 @@ export const sampleProducts: Product[] = [
     image: "/products/headphones (3).png",
     price: 470,
     discountPrice: 440,
+    description: "Advanced hybrid active noise cancellation with multiple modes, Hi-Res audio, and up to 40 hours of ANC playtime.",
+    rating: 4.6,
   },
   {
     id: "hp-4",
@@ -117,6 +142,8 @@ export const sampleProducts: Product[] = [
     image: "/products/headphones (4).png",
     price: 500,
     discountPrice: 450,
+    description: "Active Noise Cancelling with JBL Pure Bass Sound, lightweight foldable design, and 35 hours battery life with ANC.",
+    rating: 4.4,
   },
   {
     id: "hp-5",
@@ -124,6 +151,8 @@ export const sampleProducts: Product[] = [
     category: "Headphones",
     image: "/products/headphones (5).png",
     price: 460,
+    description: "Ultra-lightweight wireless gaming headset with LIGHTSPEED connectivity, low-latency Bluetooth, and dual beamforming mics.",
+    rating: 4.5,
   },
 
   // --- Power Bank ---
@@ -134,6 +163,8 @@ export const sampleProducts: Product[] = [
     image: "/products/powerbank (1).png",
     price: 680,
     discountPrice: 660,
+    description: "Ultra-powerful 140W fast charging power bank with smart digital display, power delivery 3.1, and 24,000mAh capacity.",
+    rating: 4.9,
   },
   {
     id: "pb-2",
@@ -142,6 +173,8 @@ export const sampleProducts: Product[] = [
     image: "/products/powerbank (2).png",
     price: 400,
     discountPrice: 370,
+    description: "Ultra-thin laptop power bank supporting 100W fast charging, dual Type-C ports, and status display screen.",
+    rating: 4.7,
   },
   {
     id: "pb-3",
@@ -149,6 +182,8 @@ export const sampleProducts: Product[] = [
     category: "Power Bank",
     image: "/products/powerbank (3).png",
     price: 300,
+    description: "High capacity power bank capable of 50W flash charging for laptops, tablets, and smartphones via USB-C.",
+    rating: 4.6,
   },
   {
     id: "pb-4",
@@ -157,6 +192,8 @@ export const sampleProducts: Product[] = [
     image: "/products/powerbank (4).png",
     price: 400,
     discountPrice: 365,
+    description: "Reliable 20000mAh external battery with LED power indicators, multi-device charging support, and safety protection.",
+    rating: 4.3,
   },
   {
     id: "pb-5",
@@ -164,6 +201,8 @@ export const sampleProducts: Product[] = [
     category: "Power Bank",
     image: "/products/powerbank (5).png",
     price: 250,
+    description: "Convenient wireless charging pad on-the-go with 25W super-fast wired pass-through charging capabilities.",
+    rating: 4.4,
   },
 
   // --- Wireless Speaker ---
@@ -175,6 +214,8 @@ export const sampleProducts: Product[] = [
     price: 495,
     discountPrice: 315,
     badge: "Hot",
+    description: "IP67 waterproof & dustproof speaker delivering bold JBL Original Pro Sound, built-in powerbank, and 20H playtime.",
+    rating: 4.8,
   },
   {
     id: "ws-2",
@@ -182,6 +223,8 @@ export const sampleProducts: Product[] = [
     category: "Wireless Speaker",
     image: "/products/speaker (2).png",
     price: 405,
+    description: "Compact portable speaker with rich, clear 360° sound, signature Marshall design, and 30+ hours of continuous music.",
+    rating: 4.8,
   },
   {
     id: "ws-3",
@@ -190,6 +233,8 @@ export const sampleProducts: Product[] = [
     image: "/products/speaker (3).png",
     price: 400,
     discountPrice: 345,
+    description: "Hi-Res 30W audio with ultra-wide frequency range, Qualcomm aptX, BassUp technology, and IPX7 waterproofing.",
+    rating: 4.7,
   },
   {
     id: "ws-4",
@@ -197,6 +242,8 @@ export const sampleProducts: Product[] = [
     category: "Wireless Speaker",
     image: "/products/speaker (4).png",
     price: 310,
+    description: "Small and portable wireless speaker with EXTRA BASS, Sound Diffusion Processor, and up to 16 hours battery life.",
+    rating: 4.5,
   },
   {
     id: "ws-5",
@@ -205,5 +252,7 @@ export const sampleProducts: Product[] = [
     image: "/products/speaker (5).png",
     price: 680,
     discountPrice: 640,
+    description: "Massive 90W outdoor party speaker with body-shaking XBass, synchronized RGB light show, and 30-hour battery capacity.",
+    rating: 4.7,
   },
 ];
