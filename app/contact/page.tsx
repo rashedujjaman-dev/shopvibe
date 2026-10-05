@@ -24,7 +24,7 @@ export default function ContactPage() {
     {
       icon: TbPhone,
       title: "Call Us",
-      details: "+880 090-000000",
+      details: "+090-000000",
       subDetails: "24/7",
     },
     {
@@ -197,8 +197,8 @@ export default function ContactPage() {
               {/* Quick Contact Badge */}
               <div className="mt-8 rounded-2xl bg-slate-800/80 p-4 border border-slate-700/50">
                 <p className="text-xs text-slate-400">Direct Hotline</p>
-                <p className="mt-1 text-lg font-black text-[#fd5700]">
-                  +880 090-000000
+                <p className="mt-1 text-lg font-black text-gray-300">
+                   +090-000000
                 </p>
               </div>
             </div>

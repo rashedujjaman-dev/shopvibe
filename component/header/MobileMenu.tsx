@@ -12,7 +12,10 @@ interface MobileMenuProps {
 }
 
 export const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
-  const { totalItems } = useCart();
+  const { cart } = useCart();
+
+  // Calculating the total number of items in the cart
+  const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
 
   if (!isOpen) return null;
 

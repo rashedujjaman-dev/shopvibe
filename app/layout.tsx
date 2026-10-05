@@ -5,6 +5,7 @@ import "./globals.css";
 import Footer from "@/component/Footer";
 import { Header } from "@/component/header/Header";
 import { CartProvider } from "@/context/CartContext";
+import { Toaster } from "react-hot-toast";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,6 +34,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             <Header />
             {children}
             <Footer />
+            <Toaster position="bottom-right" reverseOrder={false} />
           </main>
         </CartProvider>
       </body>

@@ -234,7 +234,7 @@ export const SearchBar = () => {
                 "
               />
 
-              {/* CLOSE BUTTON - Search Box এর ভিতরে */}
+              {/* CLOSE BUTTON */}
               <button
                 type="button"
                 onClick={closeMobileSearch}

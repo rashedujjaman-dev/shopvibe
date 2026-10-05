@@ -44,7 +44,7 @@ export default function Footer() {
       </div>
 
       {/* Main Footer Links Section */}
-      <div className="mx-auto max-w-[1400px] px-4 py-12 sm:px-6 lg:px-10 lg:py-16">
+      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-10 lg:py-16">
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-4 lg:gap-12">
           
           {/* Column 1: Brand Info */}
@@ -52,7 +52,7 @@ export default function Footer() {
             <div className=" flex shrink-0 items-center">
             <Link href="/" className=" flex items-center justify-center">
               <Image
-                src="/images/LogoShopvibe.png"
+                src="/images/ShopvibeSmartShopping.png"
                 alt="Shopvibe"
                 width={160}
                 height={50}
@@ -164,7 +164,7 @@ export default function Footer() {
               </li>
               <li className="flex items-center gap-3 text-slate-400">
                 <TbPhone className="h-5 w-5 shrink-0 text-[#fd5700]" />
-                <span>+880 010-000000</span>
+                <span>+090-000000</span>
               </li>
               <li className="flex items-center gap-3 text-slate-400">
                 <TbMail className="h-5 w-5 shrink-0 text-[#fd5700]" />
@@ -178,7 +178,7 @@ export default function Footer() {
 
       {/* Bottom Copyright & Payments */}
       <div className="border-t border-slate-800 bg-slate-950 py-6">
-        <div className="mx-auto flex max-w-[1400px] flex-col items-center justify-between gap-4 px-4 text-center text-xs text-slate-500 sm:px-6 md:flex-row md:text-left lg:px-10">
+        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-4 text-center text-xs text-slate-500 sm:px-6 md:flex-row md:text-left lg:px-10">
           <p>© {new Date().getFullYear()} ShopVibe. All rights reserved.</p>
 
            {/* Developer Credit / Link */}
