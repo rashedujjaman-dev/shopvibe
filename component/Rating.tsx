@@ -27,4 +27,4 @@ export default function Rating({ value = 0, max = 5 }: RatingProps) {
       </span>
     </div>
   );
-}
+} 
