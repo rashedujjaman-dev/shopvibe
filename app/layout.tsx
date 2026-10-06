@@ -6,6 +6,7 @@ import Footer from "@/component/Footer";
 import { Header } from "@/component/header/Header";
 import { CartProvider } from "@/context/CartContext";
 import { Toaster } from "react-hot-toast";
+import AuthProvider from "@/component/AuthProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,7 +30,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <CartProvider>
+        <AuthProvider>
+          <CartProvider>
           <main>
             <Header />
             {children}
@@ -37,6 +39,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             <Toaster position="bottom-right" reverseOrder={false} />
           </main>
         </CartProvider>
+        </AuthProvider>
+        
       </body>
     </html>
   );
