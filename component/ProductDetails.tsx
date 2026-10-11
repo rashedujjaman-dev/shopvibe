@@ -1,113 +1,112 @@
 "use client";
 
-import Image from "next/image";
-import Link from "next/link";
+import React from "react";
 import { Product } from "@/types/product";
-import Rating from "./Rating";
-import { TbShoppingBagPlus } from "react-icons/tb";
-import { FiChevronRight, FiHome } from "react-icons/fi";
 import { useCart } from "@/context/CartContext";
+import { ShoppingBag, Star, Check } from "lucide-react";
 
 interface ProductDetailsProps {
   product: Product;
 }
 
 export default function ProductDetails({ product }: ProductDetailsProps) {
-  const { name, category, image, price, discountPrice, description, rating } = product;
-  const { addToCart } = useCart();
+  const { cart, addToCart } = useCart();
+
+  // Check if this product is already in the cart
+  const isAlreadyInCart = cart.some((item) => item.id === product.id);
+
+  const displayPrice = product.discountPrice ?? product.price;
 
   const handleAddToCart = () => {
-    addToCart(product);
+    if (isAlreadyInCart) return;
+
+    addToCart({
+      id: product.id,
+      name: product.name,
+      price: displayPrice,
+      image: product.image,
+      quantity: 1,
+    });
   };
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
-      {/* Breadcrumb */}
-      <nav aria-label="Breadcrumb" className="mb-6 flex items-center space-x-2 text-sm text-gray-500">
-        <Link href="/" className="flex items-center hover:text-[#fd5700] transition-colors">
-          <FiHome className="h-4 w-4" />
-          <span className="sr-only">Home</span>
-        </Link>
-
-        <FiChevronRight className="h-4 w-4 text-gray-400" />
-
-        <Link href="/shop" className="hover:text-[#fd5700] transition-colors">
-          Shop
-        </Link>
-
-        <FiChevronRight className="h-4 w-4 text-gray-400" />
-
-        <span className="font-medium text-gray-900 truncate max-w-50 sm:max-w-xs">
-          {name}
-        </span>
-      </nav>
-
-      <div className="grid grid-cols-1 items-start gap-8 md:grid-cols-2 lg:gap-12">
-        {/* Product Image */}
-        <div className="relative aspect-square w-full overflow-hidden rounded-2xl border border-gray-100 bg-gray-50 shadow-sm">
-          <Image
-            src={image}
-            alt={name}
-            fill
-            priority
-            sizes="(max-width: 768px) 100vw, 50vw"
-            className="object-cover object-center"
+    <div className="max-w-7xl mx-auto px-4 py-8 md:py-12">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 items-start">
+        {/* Product Image Section */}
+        <div className="relative w-full h-[350px] md:h-[480px] rounded-2xl overflow-hidden bg-gray-50 border border-gray-100 shadow-sm">
+          <img
+            src={product.image}
+            alt={product.name}
+            className="w-full h-full object-cover"
           />
+          {product.badge && (
+            <span className="absolute top-4 left-4 bg-[#fd5700] text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-md">
+              {product.badge}
+            </span>
+          )}
         </div>
 
-        {/* Product Details Content */}
-        <div className="flex flex-col space-y-4">
-          <h1 className="text-2xl font-bold text-slate-900 sm:text-3xl">
-            {name}
-          </h1>
-
-          <div className="flex items-baseline gap-3">
-            <span className="text-2xl font-bold text-[#fd5700]">
-              $ {discountPrice ? discountPrice.toFixed(2) : price.toFixed(2)}
+        {/* Product Details Information */}
+        <div className="space-y-6">
+          <div>
+            <span className="text-xs font-semibold px-3 py-1 rounded-full bg-orange-100 text-[#fd5700]">
+              {product.category}
             </span>
-            {discountPrice && (
-              <span className="text-sm text-gray-400 line-through">
-                Old Price: $ {price.toFixed(2)}
+            <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mt-2">
+              {product.name}
+            </h1>
+          </div>
+
+          {/* Rating */}
+          {product.rating && (
+            <div className="flex items-center gap-1 text-amber-500">
+              <Star className="w-4 h-4 fill-current" />
+              <span className="text-sm font-semibold text-gray-700 ml-1">
+                {product.rating} / 5.0
+              </span>
+            </div>
+          )}
+
+          {/* Pricing */}
+          <div className="flex items-center gap-3">
+            <span className="text-3xl font-bold text-[#fd5700]">
+              ${displayPrice.toFixed(2)}
+            </span>
+            {product.discountPrice && (
+              <span className="text-lg text-gray-400 line-through">
+                ${product.price.toFixed(2)}
               </span>
             )}
           </div>
 
-          <div className="pt-1">
-            <Rating value={rating || 0} />
-          </div>
-
-          <p className="text-sm leading-relaxed text-gray-600 sm:text-base">
-            {description ||
-              "The smooth touch of the best fabrics, modern design and comfortable fitting—this garment will give you a stylish look and all-day comfort, enhancing your confidence and beauty in every moment."}
+          {/* Description */}
+          <p className="text-gray-600 text-sm md:text-base leading-relaxed">
+            {product.description}
           </p>
 
-          <p className="text-sm italic text-gray-500">
-            Category:{" "}
-            <Link
-              href={`/shop?category=${encodeURIComponent(category.toLowerCase())}`}
-              className="font-medium text-gray-700 hover:text-[#fd5700] hover:underline transition-colors not-italic"
-            >
-              {category}
-            </Link>
-          </p>
-
-          <div className="pt-4">
+          {/* Add to Cart Section */}
+          <div className="space-y-4 pt-4 border-t border-gray-100">
             <button
               onClick={handleAddToCart}
-              className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#fd5700] px-6 py-3.5 text-sm font-semibold text-white shadow-md transition-all hover:bg-amber-500 active:scale-95 sm:w-auto cursor-pointer"
+              disabled={isAlreadyInCart}
+              className={`w-full md:w-auto px-8 py-3.5 rounded-xl font-medium text-sm flex items-center justify-center gap-2 transition-all shadow-md ${
+                isAlreadyInCart
+                  ? "bg-gray-200 text-gray-500 cursor-not-allowed shadow-none"
+                  : "bg-[#fd5700] hover:bg-[#e04d00] text-white active:scale-[0.99] cursor-pointer"
+              }`}
             >
-              <TbShoppingBagPlus className="h-5 w-5" />
-              Add To Cart
+              {isAlreadyInCart ? (
+                <>
+                  <Check className="w-5 h-5 text-gray-500" />
+                  <span>Already Added</span>
+                </>
+              ) : (
+                <>
+                  <ShoppingBag className="w-5 h-5" />
+                  <span>Add to Cart</span>
+                </>
+              )}
             </button>
-          </div>
-
-          <div className="pt-2">
-            <Link
-              href="/shop"
-              className="inline-flex items-center text-sm font-semibold text-blue-600 transition-colors hover:underline"
-            >
-              ← Back to Products
-            </Link>
           </div>
         </div>
       </div>

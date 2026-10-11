@@ -11,7 +11,7 @@ const products = [
     name: "Power Bank",
     category: "power-bank",
     originalPrice: 390,
-    discountPercent: 15,
+    discountPercent: 13,
     image: "/products/powerbank (3).png",
   },
   {
@@ -19,7 +19,7 @@ const products = [
     name: "Wireless Earbuds",
     category: "earbuds", //
     originalPrice: 180,
-    discountPercent: 20,
+    discountPercent: 18,
     image: "/products/earbuds.png",
   },
   {
@@ -27,7 +27,7 @@ const products = [
     name: "Smart Watch",
     category: "smart-watch",
     originalPrice: 270,
-    discountPercent: 30,
+    discountPercent: 15,
     image: "/products/smartwatch (5).png",
   },
   {
@@ -35,7 +35,7 @@ const products = [
     name: "Headphones",
     category: "headphones",
     originalPrice: 190,
-    discountPercent: 25,
+    discountPercent: 14,
     image: "/products/headphones (2).png",
   },
 ];

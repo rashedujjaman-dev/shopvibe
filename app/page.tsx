@@ -1,16 +1,12 @@
-import Hero from '@/component/Hero'
-import { ProductSection } from '@/component/ProductSection'
+import Hero from "@/component/Hero";
+import { ProductSection } from "@/component/ProductSection";
 
-import React from 'react'
 
-const Home
- = () => {
+export default function Home() {
   return (
-    <div>
+    <main>
       <Hero />
       <ProductSection />
-    </div>
-  )
+    </main>
+  );
 }
-
-export default Home

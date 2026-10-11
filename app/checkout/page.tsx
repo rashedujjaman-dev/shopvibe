@@ -1,222 +1,303 @@
 "use client";
 
 import React, { useState } from "react";
+import { useCart } from "@/context/CartContext";
 import Image from "next/image";
 import Link from "next/link";
-import { useCart } from "@/context/CartContext";
-import { FiArrowLeft, FiCreditCard, FiLock } from "react-icons/fi";
-
+import { ArrowLeft, CheckCircle2, ShieldCheck } from "lucide-react";
 
 export default function CheckoutPage() {
-  const { cart, subtotal } = useCart();
+  const { cart, clearCart } = useCart();
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    address: "",
-    phone: "",
+    fullName: "",
     email: "",
+    phone: "",
+    address: "",
+    city: "",
+    paymentMethod: "cod",
   });
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleStripePayment = async (e: React.FormEvent) => {
+  // Safe subtotal calculation
+  const subtotal =
+    cart?.reduce(
+      (total, item) =>
+        total + (Number(item.price) || 0) * (Number(item.quantity) || 1),
+      0
+    ) || 0;
+
+  const shipping = subtotal > 0 ? 10.0 : 0.0;
+  const total = subtotal + shipping;
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
-    try {
-      const response = await fetch("/api/checkout", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          items: cart,
-          customerDetails: formData,
-        }),
-      });
+    // If Online Payment (Stripe) is selected
+    if (formData.paymentMethod === "online") {
+      try {
+        // এখানে ব্যাকএнд রাউটের সাথে মিলিয়ে `items` এবং `customerDetails` পাঠানো হয়েছে
+        const response = await fetch("/api/checkout", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            items: cart,
+            customerDetails: {
+              firstName: formData.fullName,
+              lastName: "",
+              email: formData.email,
+              phone: formData.phone,
+              address: `${formData.address}, ${formData.city}`,
+            },
+          }),
+        });
 
-      const data = await response.json();
+        const data = await response.json();
+        setLoading(false);
 
-      if (data.url) {
-        window.location.href = data.url;
-      } else {
-        alert(data.error || "Payment initialization failed!");
+        if (data.url) {
+          window.location.href = data.url; 
+        } else {
+          alert(data.error || "Something went wrong with Stripe checkout.");
+        }
+      } catch (error) {
+        setLoading(false);
+        console.error("Checkout error:", error);
+        alert("Failed to connect to payment gateway.");
       }
-    } catch (err: any) {
-      console.error("Payment submission error:", err);
-      alert(err.message || "Something went wrong! Please try again.");
-    } finally {
-      setLoading(false);
+      return;
     }
+
+    // Cash on Delivery flow
+    setLoading(false);
+    setIsSubmitted(true);
+    clearCart();
   };
 
-  if (cart.length === 0) {
+  if (isSubmitted) {
     return (
-      <div className="mx-auto flex min-h-[60vh] max-w-xl flex-col items-center justify-center px-4 text-center">
-        <h2 className="text-2xl font-bold text-gray-900">Your Cart is Empty</h2>
-        <p className="mt-2 text-sm text-gray-500">
-          Add items to your cart before proceeding to checkout.
-        </p>
-        <Link
-          href="/"
-          className="mt-6 inline-flex items-center gap-2 rounded-xl bg-[#fd5700] px-6 py-3 text-sm font-semibold text-white shadow-md hover:bg-amber-600 transition-all cursor-pointer"
-        >
-          <FiArrowLeft className="h-4 w-4" /> Go to Shop
-        </Link>
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
+        <div className="bg-white p-8 rounded-2xl shadow-xl border border-gray-100 max-w-md w-full text-center space-y-4">
+          <CheckCircle2 className="w-16 h-16 text-[#fd5700] mx-auto" />
+          <h2 className="text-2xl font-bold text-gray-900">
+            Order Placed Successfully!
+          </h2>
+          <p className="text-sm text-gray-600">
+            Thank you for shopping with ShopVibe. Your order has been received.
+          </p>
+          <Link
+            href="/"
+            className="inline-block w-full bg-[#fd5700] hover:bg-[#e04d00] text-white font-medium py-3 rounded-xl text-sm transition-all shadow-md cursor-pointer"
+          >
+            Back to Home
+          </Link>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-      <div className="mb-6">
-        <Link
-          href="/"
-          className="inline-flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-[#fd5700] transition-colors"
-        >
-          <FiArrowLeft className="h-4 w-4" /> Back to Shop
-        </Link>
-        <h1 className="mt-2 text-3xl font-bold text-gray-900">Checkout</h1>
-      </div>
-
-      <form onSubmit={handleStripePayment} className="grid grid-cols-1 gap-8 lg:grid-cols-12">
-        {/* Shipping Form */}
-        <div className="lg:col-span-7 space-y-6 rounded-2xl border border-gray-100 bg-white p-6 shadow-xs">
-          <h2 className="text-lg font-bold text-gray-900 border-b border-gray-100 pb-3">
-            Shipping Details
-          </h2>
-
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            <div>
-              <label className="block text-xs font-semibold text-gray-700">First Name *</label>
-              <input
-                type="text"
-                name="firstName"
-                required
-                value={formData.firstName}
-                onChange={handleInputChange}
-                placeholder="John"
-                className="mt-1 w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm focus:border-[#fd5700] focus:outline-none focus:ring-1 focus:ring-[#fd5700]"
-              />
-            </div>
-            <div>
-              <label className="block text-xs font-semibold text-gray-700">Last Name *</label>
-              <input
-                type="text"
-                name="lastName"
-                required
-                value={formData.lastName}
-                onChange={handleInputChange}
-                placeholder="Doe"
-                className="mt-1 w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm focus:border-[#fd5700] focus:outline-none focus:ring-1 focus:ring-[#fd5700]"
-              />
-            </div>
-          </div>
-
-          <div>
-            <label className="block text-xs font-semibold text-gray-700">Address *</label>
-            <input
-              type="text"
-              name="address"
-              required
-              value={formData.address}
-              onChange={handleInputChange}
-              placeholder="Street address, apartment, suite, etc."
-              className="mt-1 w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm focus:border-[#fd5700] focus:outline-none focus:ring-1 focus:ring-[#fd5700]"
-            />
-          </div>
-
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            <div>
-              <label className="block text-xs font-semibold text-gray-700">Phone *</label>
-              <input
-                type="tel"
-                name="phone"
-                required
-                value={formData.phone}
-                onChange={handleInputChange}
-                placeholder="+1 234 567 890"
-                className="mt-1 w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm focus:border-[#fd5700] focus:outline-none focus:ring-1 focus:ring-[#fd5700]"
-              />
-            </div>
-            <div>
-              <label className="block text-xs font-semibold text-gray-700">Email Address *</label>
-              <input
-                type="email"
-                name="email"
-                required
-                value={formData.email}
-                onChange={handleInputChange}
-                placeholder="john@example.com"
-                className="mt-1 w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm focus:border-[#fd5700] focus:outline-none focus:ring-1 focus:ring-[#fd5700]"
-              />
-            </div>
-          </div>
+    <div className="min-h-screen bg-gray-50 py-10 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto">
+        {/* Back Button */}
+        <div className="mb-6">
+          <Link
+            href="/"
+            className="inline-flex items-center gap-2 text-sm text-gray-600 hover:text-[#fd5700] transition-colors"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            <span>Continue Shopping</span>
+          </Link>
         </div>
 
-        {/* Order Summary & Stripe Pay Button */}
-        <div className="lg:col-span-5 space-y-6">
-          <div className="rounded-2xl border border-gray-100 bg-gray-50/50 p-6 shadow-xs space-y-4">
-            <h2 className="text-lg font-bold text-gray-900 border-b border-gray-200 pb-3">
-              Order Summary
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-8">
+          Checkout
+        </h1>
+
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+          {/* Checkout Form */}
+          <div className="lg:col-span-7 bg-white p-6 sm:p-8 rounded-2xl shadow-sm border border-gray-100">
+            <h2 className="text-lg font-bold text-gray-900 mb-6">
+              Shipping & Payment Details
             </h2>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <label className="block text-xs font-semibold text-gray-700 mb-1">
+                  Full Name
+                </label>
+                <input
+                  type="text"
+                  name="fullName"
+                  required
+                  value={formData.fullName}
+                  onChange={handleChange}
+                  placeholder="Enter your full name"
+                  className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-[#fd5700] focus:bg-white text-gray-900"
+                />
+              </div>
 
-            {/* Cart Items List */}
-            <div className="max-h-60 overflow-y-auto space-y-3 pr-1">
-              {cart.map((item) => (
-                <div key={item.id} className="flex items-center gap-3">
-                  <div className="relative h-12 w-12 shrink-0 rounded-lg border border-gray-200 overflow-hidden bg-white">
-                    <Image
-                      src={item.image || "/images/placeholder.png"}
-                      alt={item.name}
-                      fill
-                      sizes="48px"
-                      className="object-cover"
-                    />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-xs font-bold text-gray-900 truncate">{item.name}</p>
-                    <p className="text-xs text-gray-500">Qty: {item.quantity}</p>
-                  </div>
-                  <p className="text-xs font-bold text-gray-900">
-                    ${((item.discountPrice ?? item.price) * item.quantity).toFixed(2)}
-                  </p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-semibold text-gray-700 mb-1">
+                    Email Address
+                  </label>
+                  <input
+                    type="email"
+                    name="email"
+                    required
+                    value={formData.email}
+                    onChange={handleChange}
+                    placeholder="user@example.com"
+                    className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-[#fd5700] focus:bg-white text-gray-900"
+                  />
                 </div>
-              ))}
+                <div>
+                  <label className="block text-xs font-semibold text-gray-700 mb-1">
+                    Phone Number
+                  </label>
+                  <input
+                    type="text"
+                    name="phone"
+                    required
+                    value={formData.phone}
+                    onChange={handleChange}
+                    placeholder="01XXXXXXXXX"
+                    className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-[#fd5700] focus:bg-white text-gray-900"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-gray-700 mb-1">
+                  Delivery Address
+                </label>
+                <input
+                  type="text"
+                  name="address"
+                  required
+                  value={formData.address}
+                  onChange={handleChange}
+                  placeholder="House no, Road no, Area"
+                  className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-[#fd5700] focus:bg-white text-gray-900"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-gray-700 mb-1">
+                  City
+                </label>
+                <input
+                  type="text"
+                  name="city"
+                  required
+                  value={formData.city}
+                  onChange={handleChange}
+                  placeholder="e.g. Dhaka"
+                  className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-[#fd5700] focus:bg-white text-gray-900"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-gray-700 mb-1">
+                  Payment Method
+                </label>
+                <select
+                  name="paymentMethod"
+                  value={formData.paymentMethod}
+                  onChange={handleChange}
+                  className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-[#fd5700] focus:bg-white text-gray-900 cursor-pointer"
+                >
+                  <option value="cod">Cash on Delivery (COD)</option>
+                  <option value="online">Online Payment (Stripe)</option>
+                </select>
+              </div>
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full mt-4 bg-[#fd5700] hover:bg-[#e04d00] text-white font-medium py-3 rounded-xl text-sm transition-all shadow-md active:scale-[0.99] disabled:opacity-50 cursor-pointer"
+              >
+                {loading ? "Processing..." : "Confirm Order"}
+              </button>
+            </form>
+          </div>
+
+          {/* Order Summary */}
+          <div className="lg:col-span-5 space-y-6">
+            <div className="bg-white p-6 sm:p-8 rounded-2xl shadow-sm border border-gray-100 space-y-4">
+              <h2 className="text-lg font-bold text-gray-900 border-b border-gray-100 pb-4">
+                Order Summary
+              </h2>
+
+              <div className="max-h-60 overflow-y-auto space-y-3">
+                {cart.length === 0 ? (
+                  <p className="text-sm text-gray-500 text-center py-4">
+                    Your cart is empty
+                  </p>
+                ) : (
+                  cart.map((item) => (
+                    <div key={item.id} className="flex items-center gap-3">
+                      <div className="relative w-12 h-12 rounded-lg overflow-hidden bg-gray-100 shrink-0 border border-gray-200">
+                        <Image
+                          src={item.image || "/images/placeholder.png"}
+                          alt={item.name}
+                          fill
+                          className="object-cover"
+                        />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h4 className="text-xs font-semibold text-gray-800 truncate">
+                          {item.name}
+                        </h4>
+                        <p className="text-xs text-gray-500">
+                          Qty: {item.quantity}
+                        </p>
+                      </div>
+                      <span className="text-xs font-bold text-gray-900">
+                        ${(item.price * item.quantity).toFixed(2)}
+                      </span>
+                    </div>
+                  ))
+                )}
+              </div>
+
+              <div className="border-t border-gray-100 pt-4 space-y-2 text-sm">
+                <div className="flex justify-between text-gray-600">
+                  <span>Subtotal</span>
+                  <span className="font-semibold text-gray-900">
+                    ${subtotal.toFixed(2)}
+                  </span>
+                </div>
+                <div className="flex justify-between text-gray-600">
+                  <span>Shipping Fee</span>
+                  <span className="font-semibold text-gray-900">
+                    ${shipping.toFixed(2)}
+                  </span>
+                </div>
+                <div className="flex justify-between text-base font-bold text-gray-900 border-t border-gray-100 pt-2">
+                  <span>Total</span>
+                  <span className="text-[#fd5700]">${total.toFixed(2)}</span>
+                </div>
+              </div>
             </div>
 
-            <div className="border-t border-gray-200 pt-3 space-y-2 text-sm">
-              <div className="flex justify-between text-gray-600">
-                <span>Subtotal</span>
-                <span className="font-semibold text-gray-900">${subtotal.toFixed(2)}</span>
-              </div>
-              <div className="flex justify-between text-gray-600">
-                <span>Shipping</span>
-                <span className="font-semibold text-emerald-600">FREE</span>
-              </div>
-              <div className="border-t border-gray-200 pt-3 flex justify-between items-center text-base font-bold text-gray-900">
-                <span>Total Amount</span>
-                <span className="text-xl text-[#fd5700]">${subtotal.toFixed(2)}</span>
-              </div>
-            </div>
-
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full flex items-center justify-center gap-2 rounded-xl bg-[#fd5700] py-3.5 text-sm font-semibold text-white shadow-md hover:bg-amber-600 transition-all active:scale-[0.98] disabled:opacity-50 cursor-pointer"
-            >
-              <FiCreditCard className="h-4 w-4" />
-              {loading ? "Redirecting to Stripe..." : "Pay"}
-            </button>
-
-            <div className="flex items-center justify-center gap-1.5 text-xs text-gray-400">
-              <FiLock className="h-3.5 w-3.5" />
-              <span>Encrypted & 100% Secure Checkout with Stripe</span>
+            {/* Trust Badges */}
+            <div className="bg-gray-100/60 p-5 rounded-2xl flex items-center gap-4 text-gray-600 text-xs">
+              <ShieldCheck className="w-8 h-8 text-[#fd5700] shrink-0" />
+              <span>
+                100% Secure Checkout and guaranteed quality products.
+              </span>
             </div>
           </div>
         </div>
-      </form>
+      </div>
     </div>
   );
 }
