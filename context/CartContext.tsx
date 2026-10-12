@@ -20,11 +20,18 @@ interface CartContextType {
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
-export const CartProvider = ({ children }: { children: React.ReactNode }) => {
-  // Initialize state directly from localStorage to prevent empty flash on refresh
+interface CartProviderProps {
+  children: React.ReactNode;
+  userId?: string | null;
+}
+
+export const CartProvider = ({ children, userId = null }: CartProviderProps) => {
+  const STORAGE_KEY = userId ? `shopvibe_cart_${userId}` : null;
+
+  // সরাসরি useState-এর ভেতরে লোকাল স্টোরেজ থেকে ডেটা ইনিশিয়ালাইজ করা যাতে রিফ্রেশ দিলেও না হারায়
   const [cart, setCart] = useState<CartItem[]>(() => {
-    if (typeof window !== "undefined") {
-      const savedCart = localStorage.getItem("shopvibe_cart");
+    if (typeof window !== "undefined" && userId) {
+      const savedCart = localStorage.getItem(`shopvibe_cart_${userId}`);
       if (savedCart) {
         try {
           return JSON.parse(savedCart);
@@ -36,14 +43,40 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     return [];
   });
 
-  // Save cart to LocalStorage whenever it changes
+  // ইউজার পরিবর্তন বা লগইন/লগআউট করলে কার্ট সিঙ্ক করা
   useEffect(() => {
     if (typeof window !== "undefined") {
-      localStorage.setItem("shopvibe_cart", JSON.stringify(cart));
+      if (userId) {
+        const savedCart = localStorage.getItem(`shopvibe_cart_${userId}`);
+        if (savedCart) {
+          try {
+            setCart(JSON.parse(savedCart));
+          } catch (e) {
+            console.error("Failed to parse cart from localStorage", e);
+            setCart([]);
+          }
+        } else {
+          setCart([]);
+        }
+      } else {
+        setCart([]); // লগআউট থাকলে কার্ট খালি থাকবে
+      }
     }
-  }, [cart]);
+  }, [userId]);
+
+  // কার্ট পরিবর্তন হলে লোকাল স্টোরেজে স্থায়ীভাবে সেভ করা
+  useEffect(() => {
+    if (typeof window !== "undefined" && STORAGE_KEY && userId) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(cart));
+    }
+  }, [cart, STORAGE_KEY, userId]);
 
   const addToCart = (product: CartItem) => {
+    if (!userId) {
+      alert("Please log in to add items to your cart.");
+      return;
+    }
+
     setCart((prevCart) => {
       const existingIndex = prevCart.findIndex(
         (item) => String(item.id) === String(product.id)
@@ -58,10 +91,12 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const removeFromCart = (id: string | number) => {
+    if (!userId) return;
     setCart((prevCart) => prevCart.filter((item) => String(item.id) !== String(id)));
   };
 
   const updateQuantity = (id: string | number, quantity: number) => {
+    if (!userId) return;
     setCart((prevCart) =>
       prevCart
         .map((item) => {
@@ -74,7 +109,12 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     );
   };
 
-  const clearCart = () => setCart([]);
+  const clearCart = () => {
+    setCart([]);
+    if (STORAGE_KEY && typeof window !== "undefined") {
+      localStorage.removeItem(STORAGE_KEY);
+    }
+  };
 
   return (
     <CartContext.Provider

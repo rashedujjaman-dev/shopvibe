@@ -8,7 +8,6 @@ import { CartProvider } from "@/context/CartContext";
 import { Toaster } from "react-hot-toast";
 import Providers from "@/component/Providers";
 
-
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -20,11 +19,18 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "shopvibe E-commerce",
-  description: "This applications using Next.js, TypeScript, Tailwind CSS",
+  title: "Shopvibe E-commerce",
+  description: "This application using Next.js, TypeScript, Tailwind CSS",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  
+  const currentUserId = "rashed_jaman"; 
+
   return (
     <html
       lang="en"
@@ -32,18 +38,16 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="min-h-full flex flex-col">
         <Providers>
-          <CartProvider>
-          <main>
-            <Header />
-            {children}
-            <Footer />
+          <CartProvider userId={currentUserId}>
+            <main className="flex-1 flex flex-col">
+              <Header />
+              <div className="flex-1">{children}</div>
+              <Footer />
+            </main>
             <Toaster position="bottom-right" reverseOrder={false} />
-          </main>
-        </CartProvider>
+          </CartProvider>
         </Providers>
       </body>
     </html>
   );
 }
-
-//  #021d46   #fd5700

@@ -34,7 +34,7 @@ export default function CheckoutPage() {
       0
     ) || 0;
 
-  const shipping = subtotal > 0 ? 10.0 : 0.0;
+  const shipping = 0.0; // শিপিং ফি ফ্রি করা হয়েছে
   const total = subtotal + shipping;
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -288,8 +288,8 @@ export default function CheckoutPage() {
                 </div>
                 <div className="flex justify-between text-gray-600">
                   <span>Shipping Fee</span>
-                  <span className="font-semibold text-gray-900">
-                    ${shipping.toFixed(2)}
+                  <span className="font-semibold text-green-600">
+                    Free
                   </span>
                 </div>
                 <div className="flex justify-between text-base font-bold text-gray-900 border-t border-gray-100 pt-2">

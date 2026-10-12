@@ -29,15 +29,15 @@ export default function AddToCart({ isOpen, onClose }: AddToCartProps) {
   };
 
   return (
-    <div className="fixed inset-0 z-[999] overflow-hidden flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-[999] overflow-hidden flex justify-end">
       {/* Backdrop */}
       <div
         className="absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity"
         onClick={onClose}
       />
 
-      {/* Modal / Drawer Box */}
-      <div className="relative w-full max-w-md bg-white rounded-2xl shadow-2xl flex flex-col max-h-[90vh] z-10 overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+      {/* Slide-over Drawer Box (Right Side) */}
+      <div className="relative w-full max-w-md bg-white h-full shadow-2xl flex flex-col z-10 animate-in slide-in-from-right duration-300">
         {/* Drawer Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
           <div className="flex items-center gap-2">
