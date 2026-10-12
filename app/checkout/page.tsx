@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useCart } from "@/context/CartContext";
 import Image from "next/image";
 import Link from "next/link";
@@ -10,6 +10,7 @@ export default function CheckoutPage() {
   const { cart, clearCart } = useCart();
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -43,7 +44,6 @@ export default function CheckoutPage() {
     // If Online Payment (Stripe) is selected
     if (formData.paymentMethod === "online") {
       try {
-        // এখানে ব্যাকএнд রাউটের সাথে মিলিয়ে `items` এবং `customerDetails` পাঠানো হয়েছে
         const response = await fetch("/api/checkout", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -103,6 +103,17 @@ export default function CheckoutPage() {
     );
   }
 
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted) {
+    return (
+      <div className="max-w-7xl mx-auto px-4 py-16 text-center text-gray-500">
+        Loading checkout...
+      </div>
+    );
+  }
   return (
     <div className="min-h-screen bg-gray-50 py-10 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
