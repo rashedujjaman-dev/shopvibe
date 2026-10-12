@@ -77,7 +77,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#fd5700] text-white transition-all hover:bg-amber-500 active:scale-95 cursor-pointer"
           title="Add to Cart"
         >
-          <TbShoppingBagPlus className="h-5 w-5" />
+          <TbShoppingBagPlus className="h-5 w-5" />   
         </button>
       </div>
     </div>

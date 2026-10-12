@@ -59,12 +59,12 @@ export const CartProvider = ({ children, userId = null }: CartProviderProps) => 
           setCart([]);
         }
       } else {
-        setCart([]); // লগআউট থাকলে কার্ট খালি থাকবে
+        setCart([]); 
       }
     }
   }, [userId]);
 
-  // কার্ট পরিবর্তন হলে লোকাল স্টোরেজে স্থায়ীভাবে সেভ করা
+
   useEffect(() => {
     if (typeof window !== "undefined" && STORAGE_KEY && userId) {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(cart));
