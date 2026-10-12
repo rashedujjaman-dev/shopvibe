@@ -1,6 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useState, useEffect } from "react";
+import { Product } from "@/types/product";
 
 export interface CartItem {
   id: string | number;
@@ -12,7 +13,7 @@ export interface CartItem {
 
 interface CartContextType {
   cart: CartItem[];
-  addToCart: (item: CartItem) => void;
+  addToCart: (item: CartItem | Product) => void; // Product বা CartItem যেকোনো কিছু গ্রহণ করতে পারবে
   removeFromCart: (id: string | number) => void;
   updateQuantity: (id: string | number, quantity: number) => void;
   clearCart: () => void;
@@ -28,7 +29,6 @@ interface CartProviderProps {
 export const CartProvider = ({ children, userId = null }: CartProviderProps) => {
   const STORAGE_KEY = userId ? `shopvibe_cart_${userId}` : null;
 
-  // সরাসরি useState-এর ভেতরে লোকাল স্টোরেজ থেকে ডেটা ইনিশিয়ালাইজ করা যাতে রিফ্রেশ দিলেও না হারায়
   const [cart, setCart] = useState<CartItem[]>(() => {
     if (typeof window !== "undefined" && userId) {
       const savedCart = localStorage.getItem(`shopvibe_cart_${userId}`);
@@ -43,7 +43,6 @@ export const CartProvider = ({ children, userId = null }: CartProviderProps) => 
     return [];
   });
 
-  // ইউজার পরিবর্তন বা লগইন/লগআউট করলে কার্ট সিঙ্ক করা
   useEffect(() => {
     if (typeof window !== "undefined") {
       if (userId) {
@@ -59,11 +58,10 @@ export const CartProvider = ({ children, userId = null }: CartProviderProps) => 
           setCart([]);
         }
       } else {
-        setCart([]); 
+        setCart([]);
       }
     }
   }, [userId]);
-
 
   useEffect(() => {
     if (typeof window !== "undefined" && STORAGE_KEY && userId) {
@@ -71,22 +69,36 @@ export const CartProvider = ({ children, userId = null }: CartProviderProps) => 
     }
   }, [cart, STORAGE_KEY, userId]);
 
-  const addToCart = (product: CartItem) => {
+  const addToCart = (product: CartItem | Product) => {
     if (!userId) {
       alert("Please log in to add items to your cart.");
       return;
     }
 
+    // Product-এ price বা discountPrice থাকতে পারে, তা হ্যান্ডেল করার জন্য
+    const itemPrice = "discountPrice" in product && product.discountPrice ? product.discountPrice : product.price;
+
     setCart((prevCart) => {
       const existingIndex = prevCart.findIndex(
         (item) => String(item.id) === String(product.id)
       );
+      const qty = "quantity" in product && product.quantity ? product.quantity : 1;
+
       if (existingIndex > -1) {
         const updated = [...prevCart];
-        updated[existingIndex].quantity += product.quantity || 1;
+        updated[existingIndex].quantity += qty;
         return updated;
       }
-      return [...prevCart, { ...product, quantity: product.quantity || 1 }];
+      return [
+        ...prevCart,
+        {
+          id: product.id,
+          name: product.name,
+          price: itemPrice,
+          image: product.image,
+          quantity: qty,
+        },
+      ];
     });
   };
 
