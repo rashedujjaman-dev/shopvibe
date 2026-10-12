@@ -22,6 +22,16 @@ export const Header = () => {
     setIsMounted(true);
   }, []);
 
+  useEffect(() => {
+    const handleOpenCart = () => {
+      setIsCartOpen(true);
+    };
+    window.addEventListener("open-cart-drawer", handleOpenCart);
+    return () => {
+      window.removeEventListener("open-cart-drawer", handleOpenCart);
+    };
+  }, []);
+
   // A count of the total number of items
   const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
 

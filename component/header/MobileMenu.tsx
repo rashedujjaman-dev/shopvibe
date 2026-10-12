@@ -37,7 +37,7 @@ export const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-xs flex items-start justify-cente itcr pt-2 px-4 md:hidden">
+    <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-xs flex items-start justify-center pt-2 px-4 md:hidden">
       <div
         ref={menuRef}
         className="w-full max-w-sm mx-auto bg-white rounded-2xl border border-gray-100 p-4 space-y-3 shadow-2xl animate-in slide-in-from-top-2"
@@ -56,10 +56,13 @@ export const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
 
         {/* Cart & User Section */}
         <div className="pt-3 border-t border-gray-100 space-y-2">
-          <Link
-            href="/cart"
-            onClick={onClose}
-            className="flex items-center justify-between px-3 py-2 rounded-xl text-base font-medium text-gray-700 hover:bg-orange-50 hover:text-[#fd5700] transition-colors"
+          <button
+            onClick={() => {
+              onClose();
+              // হেডার কম্পোনেন্টে ড্রয়ার ওপেন করার জন্য উইন্ডো ইভেন্ট ডিসপ্যাচ করা হলো
+              window.dispatchEvent(new CustomEvent("open-cart-drawer"));
+            }}
+            className="w-full flex items-center justify-between px-3 py-2 rounded-xl text-base font-medium text-gray-700 hover:bg-orange-50 hover:text-[#fd5700] transition-colors cursor-pointer"
           >
             <div className="flex items-center space-x-2">
               <div className="relative">
@@ -78,7 +81,7 @@ export const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
                 {totalItems} {totalItems === 1 ? "Item" : "Items"}
               </span>
             )}
-          </Link>
+          </button>
 
           {/* User Profile / Login Link */}
           <div className="px-3 py-2">
