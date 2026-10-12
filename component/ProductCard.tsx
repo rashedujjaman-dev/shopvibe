@@ -16,7 +16,15 @@ export default function ProductCard({ product }: ProductCardProps) {
   const handleAddToCart = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     e.stopPropagation();
-    addToCart(product);
+    
+    // Pass product with required quantity property to match CartItem type
+    addToCart({
+      id: product.id,
+      name: product.name,
+      price: product.discountPrice ? product.discountPrice : product.price,
+      image: product.image,
+      quantity: 1,
+    });
   };
 
   return (
