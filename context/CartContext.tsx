@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState, useEffect, useRef } from "react";
 import { Product } from "@/types/product";
 
 export interface CartItem {
@@ -13,7 +13,7 @@ export interface CartItem {
 
 interface CartContextType {
   cart: CartItem[];
-  addToCart: (item: CartItem | Product) => void; // Product বা CartItem যেকোনো কিছু গ্রহণ করতে পারবে
+  addToCart: (item: CartItem | Product) => void;
   removeFromCart: (id: string | number) => void;
   updateQuantity: (id: string | number, quantity: number) => void;
   clearCart: () => void;
@@ -27,11 +27,14 @@ interface CartProviderProps {
 }
 
 export const CartProvider = ({ children, userId = null }: CartProviderProps) => {
-  const STORAGE_KEY = userId ? `shopvibe_cart_${userId}` : null;
+  // প্রতিটি ইউজারের জন্য আলাদা এবং গেস্টের জন্য আলাদা লোকাল স্টোরেজ কি (Key)
+  const STORAGE_KEY = userId ? `shopvibe_cart_${userId}` : "shopvibe_guest_cart";
+  const prevUserIdRef = useRef(userId);
 
+  // ১. ইনিশিয়ালাইজেশনের সময় বর্তমান ইউজার বা গেস্টের নিজস্ব কার্ট লোড করা
   const [cart, setCart] = useState<CartItem[]>(() => {
-    if (typeof window !== "undefined" && userId) {
-      const savedCart = localStorage.getItem(`shopvibe_cart_${userId}`);
+    if (typeof window !== "undefined") {
+      const savedCart = localStorage.getItem(STORAGE_KEY);
       if (savedCart) {
         try {
           return JSON.parse(savedCart);
@@ -43,39 +46,36 @@ export const CartProvider = ({ children, userId = null }: CartProviderProps) => 
     return [];
   });
 
+  // ২. ইউজার পরিবর্তন বা সুইচ হলে আগের ইউজারের কার্ট লুকিয়ে নতুন ইউজারের কার্ট লোড করা
   useEffect(() => {
     if (typeof window !== "undefined") {
-      if (userId) {
-        const savedCart = localStorage.getItem(`shopvibe_cart_${userId}`);
-        if (savedCart) {
-          try {
-            setCart(JSON.parse(savedCart));
-          } catch (e) {
-            console.error("Failed to parse cart from localStorage", e);
-            setCart([]);
-          }
-        } else {
+      // যদি ইউজার আইডি বদলায় (যেমন লগইন করা, লগআউট করা বা ইউজার পরিবর্তন)
+      if (prevUserIdRef.current !== userId) {
+        prevUserIdRef.current = userId;
+      }
+
+      const savedCart = localStorage.getItem(STORAGE_KEY);
+      if (savedCart) {
+        try {
+          setCart(JSON.parse(savedCart));
+        } catch (e) {
+          console.error("Failed to parse cart from localStorage", e);
           setCart([]);
         }
       } else {
-        setCart([]);
+        setCart([]); // অন্য ইউজারের কার্ট না থাকলে স্টেট সম্পূর্ণ খালি করে দেওয়া
       }
     }
-  }, [userId]);
+  }, [userId, STORAGE_KEY]);
 
+  // ৩. কার্ট পরিবর্তন হলে তা কেবল বর্তমান ইউজারের নির্দিষ্ট স্টোরেজে সেভ করা
   useEffect(() => {
-    if (typeof window !== "undefined" && STORAGE_KEY && userId) {
+    if (typeof window !== "undefined" && STORAGE_KEY) {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(cart));
     }
-  }, [cart, STORAGE_KEY, userId]);
+  }, [cart, STORAGE_KEY]);
 
   const addToCart = (product: CartItem | Product) => {
-    if (!userId) {
-      alert("Please log in to add items to your cart.");
-      return;
-    }
-
-    // Product-এ price বা discountPrice থাকতে পারে, তা হ্যান্ডেল করার জন্য
     const itemPrice = "discountPrice" in product && product.discountPrice ? product.discountPrice : product.price;
 
     setCart((prevCart) => {
@@ -103,12 +103,10 @@ export const CartProvider = ({ children, userId = null }: CartProviderProps) => 
   };
 
   const removeFromCart = (id: string | number) => {
-    if (!userId) return;
     setCart((prevCart) => prevCart.filter((item) => String(item.id) !== String(id)));
   };
 
   const updateQuantity = (id: string | number, quantity: number) => {
-    if (!userId) return;
     setCart((prevCart) =>
       prevCart
         .map((item) => {

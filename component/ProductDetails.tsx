@@ -3,7 +3,9 @@
 import React from "react";
 import { Product } from "@/types/product";
 import { useCart } from "@/context/CartContext";
-import { ShoppingBag, Star, Check } from "lucide-react";
+import { Star, Check } from "lucide-react";
+import { TbShoppingBagPlus } from "react-icons/tb";
+
 
 interface ProductDetailsProps {
   product: Product;
@@ -102,7 +104,7 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
                 </>
               ) : (
                 <>
-                  <ShoppingBag className="w-5 h-5" />
+                  <TbShoppingBagPlus className="w-5 h-5" />
                   <span>Add to Cart</span>
                 </>
               )}
