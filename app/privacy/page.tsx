@@ -9,7 +9,6 @@ import {
 } from "react-icons/tb";
 
 export default function PrivacyPage() {
-  const lastUpdated = "October 2026";
 
   const sections = [
     {
@@ -64,9 +63,7 @@ export default function PrivacyPage() {
           <p className="mx-auto mt-4 max-w-2xl text-xs text-slate-600 sm:text-base">
             At ShopVibe, we take your privacy seriously. Learn how we handle and protect your personal information.
           </p>
-          <p className="mt-3 text-[11px] font-semibold text-slate-400">
-            Last Updated: {lastUpdated}
-          </p>
+         
         </div>
 
         {/* Content Section */}

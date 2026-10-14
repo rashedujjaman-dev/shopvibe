@@ -28,12 +28,7 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  // আপনার সেশন বা অথ সিস্টেম থেকে ইউজারের ডাইনামিক আইডি নিন।
-  // যেমন: const session = await auth(); 
-  // const currentUserId = session?.user?.id || null;
-  
-  // উদাহরণস্বরূপ, লগইন করা থাকলে ইউজারের আইডি এবং লগআউট থাকলে null হবে:
-  const currentUserId = null; // এখানে আপনার সেশনের ডাইনামিক ইউজার আইডি বসবে
+  const currentUserId = null; 
 
   return (
     <html
