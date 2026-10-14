@@ -20,12 +20,12 @@ const categories = [
 export const ProductSection = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
 
-  // Filter products category
+  // Filter products by category
 
   const filteredProducts = selectedCategory === "All" ? sampleProducts : sampleProducts.filter((p) => p.category === selectedCategory);
 
   return (
-    <section className="py-12 ">
+    <section className="py-12 bg-slate-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
 
         {/* Title */}

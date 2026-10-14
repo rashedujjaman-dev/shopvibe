@@ -11,12 +11,14 @@ import { FiShoppingCart } from "react-icons/fi";
 import { useCart } from "@/context/CartContext";
 import AddToCart from "../AddToCart";
 import UserProfile from "../UserProfile";
+import { usePathname } from "next/navigation";
 
 export const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
   const { cart } = useCart();
+  const pathname = usePathname();
 
   useEffect(() => {
     setIsMounted(true);
@@ -66,16 +68,24 @@ export const Header = () => {
 
             {/* Desktop Nav Links */}
             <nav className="hidden md:flex items-center justify-center space-x-8 text-base font-medium text-gray-700">
-              {NAV_ITEMS.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className="hover:text-[#fd5700] transition-colors"
-                >
-                  {item.title}
-                </Link>
-              ))}
-            </nav>
+  {NAV_ITEMS.map((item) => {
+    const isActive = pathname === item.href;
+
+    return (
+      <Link
+        key={item.href}
+        href={item.href}
+        className={`relative transition-colors pb-1 ${
+          isActive
+            ? "text-[#fd5700] font-semibold after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:bg-[#fd5700]"
+            : "hover:text-[#fd5700]"
+        }`}
+      >
+        {item.title}
+      </Link>
+    );
+  })}
+</nav>
 
             {/* Desktop Icons */}
             <div className="hidden md:flex items-center space-x-5">
