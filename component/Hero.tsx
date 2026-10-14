@@ -65,7 +65,7 @@ export default function Hero() {
               </div>
 
               {/* Heading */}
-              <h1 className="max-w-[400px] text-[30px] font-black leading-[1.05] tracking-tight text-slate-900 sm:text-[40px] md:text-[46px] lg:text-[43px] xl:text-[52px]">
+              <h1 className="max-w-100 text-[30px] font-black leading-[1.05] tracking-tight text-slate-900 sm:text-[40px] md:text-[46px] lg:text-[43px] xl:text-[52px]">
                 Top Picks for a
                 <span className="mt-1 block font-serif italic text-[#fd5700]">
                   Better You
@@ -73,13 +73,13 @@ export default function Hero() {
               </h1>
 
               {/* Description */}
-              <p className="mt-3 max-w-[390px] text-[11px] font-medium leading-5 text-slate-700 sm:mt-4 sm:text-sm sm:leading-6">
+              <p className="mt-3 max-w-97.5 text-[11px] font-medium leading-5 text-slate-700 sm:mt-4 sm:text-sm sm:leading-6">
                 Make your daily life easier, smarter, and more stylish with some
                 of our best products!
               </p>
 
               {/* Benefits */}
-              <div className="mt-4 grid max-w-[430px] grid-cols-3 gap-2 sm:mt-5 sm:gap-3">
+              <div className="mt-4 grid max-w-107.5 grid-cols-3 gap-2 sm:mt-5 sm:gap-3">
                 {/* Free Delivery */}
                 <div className="flex items-center gap-1.5 sm:gap-2">
                   <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#f8d6c6] sm:h-9 sm:w-9">
@@ -164,7 +164,7 @@ export default function Hero() {
             </div>
 
             {/* ================= PRODUCTS ================= */}
-            <div className="relative min-h-[280px] sm:min-h-[390px] md:min-h-[430px] lg:min-h-[440px]">
+            <div className="relative min-h-70 sm:min-h-97.5 md:min-h-107.5 lg:min-h-110">
               {/* Product 1 - Power Bank */}
               <ProductCard
                 product={products[0]}
@@ -199,7 +199,7 @@ export default function Hero() {
 
       {/* ================= TRUST BAR ================= */}
       <div className="w-full bg-[#062b3a] text-white">
-        <div className="mx-auto grid max-w-[1400px] grid-cols-3">
+        <div className="mx-auto grid max-w-350 grid-cols-3">
           {/* Genuine */}
           <TrustItem
             type="shield"
