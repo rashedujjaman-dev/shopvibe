@@ -1,3 +1,5 @@
+
+
 "use client";
 
 import React, { useEffect, useState } from "react";
@@ -34,7 +36,7 @@ export default function CheckoutPage() {
       0
     ) || 0;
 
-  const shipping = 0.0; // শিপিং ফি ফ্রি করা হয়েছে
+  const shipping = 0.0; 
   const total = subtotal + shipping;
 
   const handleSubmit = async (e: React.FormEvent) => {

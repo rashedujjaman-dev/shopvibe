@@ -9,7 +9,6 @@ const SingINButton = () => {
   const { data: session, status } = useSession();
   const [imageError, setImageError] = useState(false);
 
-  // লোডিং অবস্থায় স্কেলিটন দেখাবে
   if (status === "loading") {
     return (
       <div className="flex items-center gap-2">
@@ -33,7 +32,7 @@ const SingINButton = () => {
           onClick={() => signOut({ callbackUrl: "/login" })}
           className="flex items-center gap-2.5 text-sm cursor-pointer group select-none"
         >
-          {/* প্রোফাইল ইমেজ কন্টেইনার */}
+          {/* profile image container*/}
           <div className="relative border border-gray-300 rounded-full w-10 h-10 overflow-hidden flex-shrink-0 bg-gray-100 flex items-center justify-center shadow-sm">
             {userImage && !imageError ? (
               <Image
@@ -43,7 +42,7 @@ const SingINButton = () => {
                 sizes="40px"
                 className="object-cover rounded-full"
                 onError={() => setImageError(true)}
-                unoptimized // গুগলের রেফারার পলিসি ব্লক এড়াতে এটি জরুরি
+                unoptimized 
               />
             ) : (
               <span className="text-sm font-bold text-[#fd5700]">
@@ -52,7 +51,7 @@ const SingINButton = () => {
             )}
           </div>
 
-          {/* ইউজার ইনফো */}
+          {/* user info */}
           <div className="flex flex-col">
             <p className="text-xs text-gray-600 truncate max-w-[100px] sm:max-w-[140px] font-medium leading-tight">
               {userName}

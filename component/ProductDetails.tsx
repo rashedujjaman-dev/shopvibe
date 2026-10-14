@@ -35,7 +35,7 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
     <div className="max-w-7xl mx-auto px-4 py-8 md:py-12">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 items-start">
         {/* Product Image Section */}
-        <div className="relative w-full h-[350px] md:h-[480px] rounded-2xl overflow-hidden bg-gray-50 border border-gray-100 shadow-sm">
+        <div className="relative w-full h-87.5 md:h-120 rounded-2xl overflow-hidden bg-gray-50 border border-gray-100 shadow-sm">
           <img
             src={product.image}
             alt={product.name}

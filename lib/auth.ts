@@ -19,7 +19,7 @@ export const authOptions: NextAuthOptions = {
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
-          throw new Error("ইমেইল ও পাসওয়ার্ড দিন");
+          throw new Error("Enter your email and password.");
         }
 
         await connectToDatabase();
@@ -27,7 +27,7 @@ export const authOptions: NextAuthOptions = {
         const user = await User.findOne({ email: credentials.email });
 
         if (!user || !user.password) {
-          throw new Error("ইউজার পাওয়া যায়নি অথবা পাসওয়ার্ড সেট করা নেই");
+          throw new Error("User not found or password not set.");
         }
 
         const isPasswordMatch = await bcrypt.compare(
@@ -36,7 +36,7 @@ export const authOptions: NextAuthOptions = {
         );
 
         if (!isPasswordMatch) {
-          throw new Error("ভুল পাসওয়ার্ড!");
+          throw new Error("wrong password!");
         }
 
         return {

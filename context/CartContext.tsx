@@ -1,3 +1,5 @@
+
+
 "use client";
 
 import React, { createContext, useContext, useState, useEffect, useRef } from "react";
@@ -27,11 +29,11 @@ interface CartProviderProps {
 }
 
 export const CartProvider = ({ children, userId = null }: CartProviderProps) => {
-  // প্রতিটি ইউজারের জন্য আলাদা এবং গেস্টের জন্য আলাদা লোকাল স্টোরেজ কি (Key)
+  // What are the separate local storage keys for each user and for guests?
   const STORAGE_KEY = userId ? `shopvibe_cart_${userId}` : "shopvibe_guest_cart";
   const prevUserIdRef = useRef(userId);
 
-  // ১. ইনিশিয়ালাইজেশনের সময় বর্তমান ইউজার বা গেস্টের নিজস্ব কার্ট লোড করা
+  // Loading the current user's or guest's own card during initialization
   const [cart, setCart] = useState<CartItem[]>(() => {
     if (typeof window !== "undefined") {
       const savedCart = localStorage.getItem(STORAGE_KEY);
@@ -46,10 +48,9 @@ export const CartProvider = ({ children, userId = null }: CartProviderProps) => 
     return [];
   });
 
-  // ২. ইউজার পরিবর্তন বা সুইচ হলে আগের ইউজারের কার্ট লুকিয়ে নতুন ইউজারের কার্ট লোড করা
+  // Loading the new user's cart by hiding the previous user's cart when the user changes or switches
   useEffect(() => {
     if (typeof window !== "undefined") {
-      // যদি ইউজার আইডি বদলায় (যেমন লগইন করা, লগআউট করা বা ইউজার পরিবর্তন)
       if (prevUserIdRef.current !== userId) {
         prevUserIdRef.current = userId;
       }
@@ -63,12 +64,12 @@ export const CartProvider = ({ children, userId = null }: CartProviderProps) => 
           setCart([]);
         }
       } else {
-        setCart([]); // অন্য ইউজারের কার্ট না থাকলে স্টেট সম্পূর্ণ খালি করে দেওয়া
+        setCart([]); // Clearing the state completely if there is no cart from another user.
       }
     }
   }, [userId, STORAGE_KEY]);
 
-  // ৩. কার্ট পরিবর্তন হলে তা কেবল বর্তমান ইউজারের নির্দিষ্ট স্টোরেজে সেভ করা
+  // Saving cart changes only to the current user's specific storage.
   useEffect(() => {
     if (typeof window !== "undefined" && STORAGE_KEY) {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(cart));

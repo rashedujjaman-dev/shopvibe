@@ -77,7 +77,7 @@ export const Header = () => {
         href={item.href}
         className={`relative transition-colors pb-1 ${
           isActive
-            ? "text-[#fd5700] font-semibold after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:bg-[#fd5700]"
+            ? "text-[#fd5700] font-semibold after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-[#fd5700]"
             : "hover:text-[#fd5700]"
         }`}
       >

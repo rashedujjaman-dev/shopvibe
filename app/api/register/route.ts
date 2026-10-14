@@ -9,26 +9,26 @@ export async function POST(req: Request) {
 
     if (!name || !email || !password) {
       return NextResponse.json(
-        { error: "সকল তথ্য প্রদান করুন" },
+        { error: "Please provide all the information." },
         { status: 400 }
       );
     }
 
     await connectToDatabase();
 
-    // ইউজারের অস্তিত্ব পরীক্ষা
+  
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return NextResponse.json(
-        { error: "এই ইমেইল দিয়ে অলরেডি একাউন্ট রয়েছে" },
+        { error: "An account already exists with this email." },
         { status: 400 }
       );
     }
 
-    // পাসওয়ার্ড হ্যাশিং
+    // password hashing
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // ইউজার তৈরি
+    // user create
     const newUser = await User.create({
       name,
       email,

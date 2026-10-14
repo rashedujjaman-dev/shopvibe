@@ -155,7 +155,7 @@ export default function AuthPage() {
                     required={!isLogin}
                     value={formData.name}
                     onChange={handleChange}
-                    placeholder="Md Rashedujjaman"
+                    placeholder="Your Name"
                     className="w-full pl-9 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-[#fd5700] focus:bg-white transition-all text-gray-900"
                   />
                 </div>

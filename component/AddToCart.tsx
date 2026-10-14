@@ -29,7 +29,7 @@ export default function AddToCart({ isOpen, onClose }: AddToCartProps) {
   };
 
   return (
-    <div className="fixed inset-0 z-[999] overflow-hidden flex justify-end">
+    <div className="fixed inset-0 z-999 overflow-hidden flex justify-end">
       {/* Backdrop */}
       <div
         className="absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity"

@@ -37,7 +37,7 @@ export default function PrivacyPage() {
       icon: TbLock,
       title: "4. Data Security",
       content:
-        "We implement robust administrative, technical, and physical security measures to safeguard your personal data. All online transactions are processed through encrypted, secure payment gateways (bKash, Nagad, Cards).",
+        "We implement robust administrative, technical, and physical security measures to safeguard your personal data. All online transactions are processed through encrypted, secure payment gateways (Payoneer, PayPal, Visa/Master Cards).",
     },
     {
       id: "policy-updates",

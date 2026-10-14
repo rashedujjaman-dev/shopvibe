@@ -22,7 +22,7 @@ export async function connectToDatabase() {
   try {
     cached.conn = await cached.promise;
   } catch (e) {
-    cached.promise = null; // ব্যর্থ হলে পরের বার আবার চেষ্টা করবে
+    cached.promise = null; // If you fail, try again next time.
     throw e;
   }
 

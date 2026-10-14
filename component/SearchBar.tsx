@@ -112,7 +112,7 @@ export const SearchBar = () => {
               return (
                 <Link
                   key={item.id}
-                  href={`/product/${item.id}`} // প্রোডাক্ট ডিটেইলস পেজের সঠিক রাউট (/product/[id])
+                  href={`/product/${item.id}`} 
                   onClick={() => {
                     setOpenDropdown(false);
                     setSearch("");
@@ -181,7 +181,7 @@ export const SearchBar = () => {
                 return (
                   <Link
                     key={item.id}
-                    href={`/product/${item.id}`} // প্রোডাক্ট ডিটেইলস পেজের সঠিক রাউট (/product/[id])
+                    href={`/product/${item.id}`}
                     onClick={() => {
                       setOpenDropdown(false);
                       setIsMobileSearchOpen(false);
