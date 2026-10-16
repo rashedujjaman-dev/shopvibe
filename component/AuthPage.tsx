@@ -79,7 +79,6 @@ export default function AuthPage() {
 
       <div className="sm:mx-auto sm:w-full sm:max-w-md px-4 sm:px-0">
         <div className="bg-white py-8 px-6 shadow-xl rounded-2xl border border-gray-100 sm:px-10">
-          
           {/* Header */}
           <div className="text-center mb-6">
             <h2 className="text-2xl font-bold text-gray-900 tracking-tight">
@@ -224,7 +223,11 @@ export default function AuthPage() {
               disabled={loading}
               className="w-full mt-2 bg-[#fd5700] hover:bg-[#e04d00] text-white font-medium py-2.5 rounded-xl text-sm transition-all shadow-md active:scale-[0.99] disabled:opacity-50 cursor-pointer"
             >
-              {loading ? "Processing..." : isLogin ? "Sign In" : "Create Account"}
+              {loading
+                ? "Processing..."
+                : isLogin
+                  ? "Sign In"
+                  : "Create Account"}
             </button>
           </form>
 

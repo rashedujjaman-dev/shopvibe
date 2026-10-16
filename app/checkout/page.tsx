@@ -1,18 +1,26 @@
-
-
 "use client";
 
 import React, { useEffect, useState } from "react";
 import { useCart } from "@/context/CartContext";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, CheckCircle2, ShieldCheck } from "lucide-react";
+import { ArrowLeft, ShieldCheck } from "lucide-react";
+import {
+  FiCheckCircle,
+  FiArrowRight,
+  FiBox,
+  FiClock,
+  FiTruck,
+} from "react-icons/fi";
+import { TbShoppingBagPlus } from "react-icons/tb";
 
 export default function CheckoutPage() {
   const { cart, clearCart } = useCart();
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
+  const [orderId, setOrderId] = useState("");
+
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -22,8 +30,12 @@ export default function CheckoutPage() {
     paymentMethod: "cod",
   });
 
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -33,10 +45,10 @@ export default function CheckoutPage() {
     cart?.reduce(
       (total, item) =>
         total + (Number(item.price) || 0) * (Number(item.quantity) || 1),
-      0
+      0,
     ) || 0;
 
-  const shipping = 0.0; 
+  const shipping = 0.0;
   const total = subtotal + shipping;
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -65,7 +77,7 @@ export default function CheckoutPage() {
         setLoading(false);
 
         if (data.url) {
-          window.location.href = data.url; 
+          window.location.href = data.url;
         } else {
           alert(data.error || "Something went wrong with Stripe checkout.");
         }
@@ -79,43 +91,119 @@ export default function CheckoutPage() {
 
     // Cash on Delivery flow
     setLoading(false);
+    // Unique order id
+    const generatedId = `SV-COD-${Math.floor(100000 + Math.random() * 900000)}`;
+    setOrderId(generatedId);
     setIsSubmitted(true);
     clearCart();
   };
 
+  if (!isMounted) {
+    return (
+      <div className="flex min-h-[60vh] items-center justify-center">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-[#fd5700] border-t-transparent"></div>
+      </div>
+    );
+  }
+
+  // Cash on Delivery Success View
   if (isSubmitted) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
-        <div className="bg-white p-8 rounded-2xl shadow-xl border border-gray-100 max-w-md w-full text-center space-y-4">
-          <CheckCircle2 className="w-16 h-16 text-[#fd5700] mx-auto" />
-          <h2 className="text-2xl font-bold text-gray-900">
-            Order Placed Successfully!
-          </h2>
-          <p className="text-sm text-gray-600">
-            Thank you for shopping with ShopVibe. Your order has been received.
+      <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
+        <div className="overflow-hidden rounded-3xl border border-emerald-100 bg-white p-6 sm:p-10 shadow-xl shadow-emerald-500/5 text-center">
+          {/* Animated Success Badge */}
+          <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-emerald-50 text-emerald-500 animate-bounce">
+            <FiCheckCircle className="h-12 w-12" />
+          </div>
+
+          <span className="inline-block rounded-full bg-emerald-100/80 px-3 py-1 text-xs font-semibold text-emerald-700">
+            Order Placed Successfully (COD)
+          </span>
+
+          <h1 className="mt-3 text-3xl font-extrabold text-gray-900 sm:text-4xl">
+            Thank You for Your Order!
+          </h1>
+          <p className="mt-2 text-sm sm:text-base text-gray-600 max-w-md mx-auto">
+            We have received your order. You can pay with Cash on Delivery when
+            your package arrives. A confirmation details has been sent to your
+            phone/email.
           </p>
-          <Link
-            href="/"
-            className="inline-block w-full bg-[#fd5700] hover:bg-[#e04d00] text-white font-medium py-3 rounded-xl text-sm transition-all shadow-md cursor-pointer"
-          >
-            Back to Home
-          </Link>
+
+          {/* Order Reference Badge */}
+          {orderId && (
+            <div className="mt-6 inline-flex items-center gap-2 rounded-xl bg-gray-50 border border-gray-100 px-4 py-2 text-xs font-medium text-gray-500">
+              <span>Order ID:</span>
+              <span className="font-mono font-bold text-gray-800 truncate max-w-50">
+                {orderId}
+              </span>
+            </div>
+          )}
+
+          {/* Highlights */}
+          <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-3 text-left">
+            <div className="flex items-start gap-3 rounded-2xl bg-gray-50/80 p-4 border border-gray-100">
+              <div className="rounded-lg bg-orange-100 p-2 text-[#fd5700]">
+                <FiBox className="h-5 w-5" />
+              </div>
+              <div>
+                <p className="text-xs font-semibold text-gray-900">
+                  Order Placed
+                </p>
+                <p className="text-[11px] text-gray-500">
+                  Items preparing for shipment
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-3 rounded-2xl bg-gray-50/80 p-4 border border-gray-100">
+              <div className="rounded-lg bg-blue-100 p-2 text-blue-600">
+                <FiClock className="h-5 w-5" />
+              </div>
+              <div>
+                <p className="text-xs font-semibold text-gray-900">
+                  Fast Delivery
+                </p>
+                <p className="text-[11px] text-gray-500">
+                  Estimated within 2-4 days
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-3 rounded-2xl bg-gray-50/80 p-4 border border-gray-100">
+              <div className="rounded-lg bg-emerald-100 p-2 text-emerald-600">
+                <FiTruck className="h-5 w-5" />
+              </div>
+              <div>
+                <p className="text-xs font-semibold text-gray-900">
+                  Cash on Delivery
+                </p>
+                <p className="text-[11px] text-gray-500">
+                  Pay when you receive
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+            <Link
+              href="/shop"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl bg-[#fd5700] px-8 py-3.5 text-sm font-semibold text-white shadow-lg shadow-[#fd5700]/25 hover:bg-orange-600 transition-all cursor-pointer active:scale-95"
+            >
+              <TbShoppingBagPlus className="h-4 w-4" /> Continue Shopping
+            </Link>
+            <Link
+              href="/"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white px-8 py-3.5 text-sm font-semibold text-gray-700 hover:bg-gray-50 transition-all cursor-pointer"
+            >
+              Go to Homepage <FiArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
         </div>
       </div>
     );
   }
 
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  if (!isMounted) {
-    return (
-      <div className="max-w-7xl mx-auto px-4 py-16 text-center text-gray-500">
-        Loading checkout...
-      </div>
-    );
-  }
   return (
     <div className="min-h-screen bg-gray-50 py-10 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
@@ -290,9 +378,7 @@ export default function CheckoutPage() {
                 </div>
                 <div className="flex justify-between text-gray-600">
                   <span>Shipping Fee</span>
-                  <span className="font-semibold text-green-600">
-                    Free
-                  </span>
+                  <span className="font-semibold text-green-600">Free</span>
                 </div>
                 <div className="flex justify-between text-base font-bold text-gray-900 border-t border-gray-100 pt-2">
                   <span>Total</span>
@@ -304,9 +390,7 @@ export default function CheckoutPage() {
             {/* Trust Badges */}
             <div className="bg-gray-100/60 p-5 rounded-2xl flex items-center gap-4 text-gray-600 text-xs">
               <ShieldCheck className="w-8 h-8 text-[#fd5700] shrink-0" />
-              <span>
-                100% Secure Checkout and guaranteed quality products.
-              </span>
+              <span>100% Secure Checkout and guaranteed quality products.</span>
             </div>
           </div>
         </div>

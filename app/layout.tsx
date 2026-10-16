@@ -7,6 +7,7 @@ import { Header } from "@/component/header/Header";
 import { CartProvider } from "@/context/CartContext";
 import { Toaster } from "react-hot-toast";
 import Providers from "@/component/Providers";
+import { CookieBanner } from "@/component/CookieBanner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,7 +29,7 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const currentUserId = null; 
+  const currentUserId = null;
 
   return (
     <html
@@ -42,6 +43,7 @@ export default async function RootLayout({
               <Header />
               <div className="flex-1">{children}</div>
               <Footer />
+              <CookieBanner />
             </main>
             <Toaster position="bottom-right" reverseOrder={false} />
           </CartProvider>

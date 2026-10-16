@@ -20,12 +20,12 @@ export default function AddToCart({ isOpen, onClose }: AddToCartProps) {
 
   const totalAmount = cart.reduce(
     (total, item) => total + item.price * item.quantity,
-    0
+    0,
   );
 
   const handleCheckout = () => {
     onClose();
-    router.push("/checkout"); 
+    router.push("/checkout");
   };
 
   return (
@@ -42,7 +42,9 @@ export default function AddToCart({ isOpen, onClose }: AddToCartProps) {
         <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
           <div className="flex items-center gap-2">
             <FiShoppingCart className="w-5 h-5 text-[#fd5700]" />
-            <h2 className="text-lg font-bold text-gray-900">Your Shopping Cart</h2>
+            <h2 className="text-lg font-bold text-gray-900">
+              Your Shopping Cart
+            </h2>
           </div>
           <button
             onClick={onClose}
@@ -58,7 +60,9 @@ export default function AddToCart({ isOpen, onClose }: AddToCartProps) {
             <div className="text-center py-20 text-gray-500">
               <FiShoppingCart className="w-12 h-12 mx-auto text-gray-300 mb-3" />
               <p className="text-base font-medium">Your cart is empty</p>
-              <p className="text-xs text-gray-400 mt-1">Add items to get started shopping.</p>
+              <p className="text-xs text-gray-400 mt-1">
+                Add items to get started shopping.
+              </p>
             </div>
           ) : (
             cart.map((item) => (
@@ -117,8 +121,12 @@ export default function AddToCart({ isOpen, onClose }: AddToCartProps) {
         {cart.length > 0 && (
           <div className="border-t border-gray-100 px-6 py-4 bg-gray-50 space-y-3">
             <div className="flex justify-between items-center">
-              <span className="text-sm font-medium text-gray-600">Subtotal:</span>
-              <span className="text-lg font-bold text-gray-900">${totalAmount.toFixed(2)}</span>
+              <span className="text-sm font-medium text-gray-600">
+                Subtotal:
+              </span>
+              <span className="text-lg font-bold text-gray-900">
+                ${totalAmount.toFixed(2)}
+              </span>
             </div>
 
             <button
